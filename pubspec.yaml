@@ -1,0 +1,29 @@
+name: flutter_application_1
+description: Aplikasi magang dan bimbingan SITAMA
+
+# Versi Flutter yang digunakan
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+# Dependencies
+dependencies:
+  flutter:
+    sdk: flutter
+  intl: ^0.17.0
+  meta: ^1.7.0
+
+# Dev dependencies
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+# Flutter specific configurations
+flutter:
+  uses-material-design: true
+  
+  # Assets
+  assets:
+    - assets/sitama_logo.png
+    - assets/google_logo.png
+    - assets/login_logo.png
