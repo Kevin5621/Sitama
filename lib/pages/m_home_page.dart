@@ -48,40 +48,51 @@ class _HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.orange.withOpacity(0.5),
+      decoration: const BoxDecoration(
+        color: Colors.white,
       ),
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'HELLO,',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: const BoxDecoration(
+                      color: Colors.orange,
                     ),
-                    const Text(
-                      'Lucas Scott',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: const Column (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'HELLO,',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          'Lucas Scott',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    NotificationWidget(
-                      onClose: () {
-                        // Implement notification close functionality
+                  ), 
+                  const SizedBox(height:16),
+                  Container(
+                    color: Colors.white,
+                    child: NotificationWidget(
+                      onClose:(){
                       },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             SliverToBoxAdapter(
@@ -157,25 +168,29 @@ class _HomeContent extends StatelessWidget {
                 ),
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => LogBookItemWidget(
-                  item: LogBookItem(
-                    week: 'Minggu ${index + 1}',
-                    date: DateTime(2024, 1, 21 + index * 7),
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-                  ),
-                  onEdit: (updatedItem) {
-                    // Implement edit functionality
-                  },
-                ),
-                childCount: 2,
-              ),
-            ),
+            newloogbook(),
           ],
         ),
       ),
     );
+  }
+
+  SliverList newloogbook() {
+    return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => LogBookItemWidget(
+                item: LogBookItem(
+                  week: 'Minggu ${index + 1}',
+                  date: DateTime(2024, 1, 21 + index * 7),
+                  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+                ),
+                onEdit: (updatedItem) {
+                  // Implement edit functionality
+                },
+              ),
+              childCount: 2,
+            ),
+          );
   }
 }
 
@@ -184,27 +199,32 @@ class NotificationWidget extends StatelessWidget {
 
   const NotificationWidget({Key? key, required this.onClose}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.amber,
-        borderRadius: BorderRadius.circular(8),
+@override
+Widget build(BuildContext context) {
+  return Center(  
+    child: IntrinsicWidth(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.amber,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline),
+            const SizedBox(width: 8),
+            const Text('Anda belum dijadwalkan seminar'),  
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: onClose,
+            ),
+          ],
+        ),
       ),
-      child: Row(
-        children: [
-          const Icon(Icons.info_outline),
-          const SizedBox(width: 8),
-          const Expanded(child: Text('Anda belum dijadwalkan seminar')),
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: onClose,
-          ),
-        ],
-      ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 enum BimbinganStatus { revisi, pending, approved }
