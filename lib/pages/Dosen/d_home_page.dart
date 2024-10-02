@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'm_settings_page.dart';
+import '../Mahasiswa/m_settings_page.dart';
 import 'd_card_page.dart'; // Pastikan untuk mengimpor file ini
 
 void main() {
@@ -69,7 +69,7 @@ class _StudentListPageState extends State<StudentListPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => BimbinganPage(studentName: studentName),
+        builder: (context) => CardMahasiswa(studentName: studentName),
       ),
     );
   }

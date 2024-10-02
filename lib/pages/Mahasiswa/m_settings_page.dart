@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'g_reset_password.dart'; // Pastikan ini mengarah ke file reset password
-import 'g_start_page.dart'; // Pastikan ini mengarah ke halaman utama
+import 'm_add_industry.dart';
+import '../General/g_reset_password.dart';
+import '../General/g_start_page.dart';
 
-class DProfileDosenPage extends StatelessWidget {
-  const DProfileDosenPage({Key? key}) : super(key: key);
+class MSettingsPage extends StatelessWidget {
+  const MSettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil Dosen'),
+        title: const Text('Profile'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -21,24 +22,34 @@ class DProfileDosenPage extends StatelessWidget {
             children: [
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/profile_image.png'), // Ganti dengan gambar profil dosen
+                backgroundImage: AssetImage('assets/profile_image.png'),
               ),
               const SizedBox(height: 16),
               const Text(
-                'Dosen: John Doe', // Ganti dengan nama dosen
+                'Lucas Scott',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const Text(
-                'NIP: 1234567890', // Ganti dengan NIP dosen
+                '3.34.23.2.24',
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const Text(
-                'johndoe@polnes.com', // Ganti dengan email dosen
+                'lucasscott@polnes.com',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 24),
-              const IndustryCard(), // Anda bisa menyesuaikan konten di sini jika perlu
+              const IndustryCard(),
               const SizedBox(height: 16),
+              SettingsButton(
+                icon: Icons.add_business,
+                title: 'Tambah Industri',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const MAddIndustryPage()),
+                  );
+                },
+              ),
               SettingsButton(
                 icon: Icons.lock_reset,
                 title: 'Reset Password',
