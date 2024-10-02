@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const CardMahasiswa(studentName: '',));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class CardMahasiswa extends StatelessWidget {
+  const CardMahasiswa({Key? key, required String studentName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/bimbingan_item.dart';
-// import 'status_icon.dart';
 
 class BimbinganItemWidget extends StatelessWidget {
   final BimbinganItem item;
@@ -17,63 +16,99 @@ class BimbinganItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      color: item.status == BimbinganStatus.revisi ? Colors.orange[100] : null,
+      color: _getCardColor(),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: Stack(
+        child: ExpansionTile(
+          tilePadding: EdgeInsets.zero,
+          childrenPadding: EdgeInsets.zero,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: _getStatusIcon(),
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(item.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(DateFormat('dd/MM/yyyy').format(item.date),
+                  style: const TextStyle(fontSize: 12, color: Colors.grey)),
+            ],
+          ),
           children: [
-            ExpansionTile(
-              tilePadding: EdgeInsets.zero,
-              childrenPadding: EdgeInsets.zero,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                // child: StatusIconHelper.getStatusIcon(item.status),
-              ),
-              title: Center(child: Text(item.title)),
-              subtitle: Center(child: Text(DateFormat('dd/MM/yyyy').format(item.date))),
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.description, textAlign: TextAlign.left),
-                      if (item.fileUrl != null)
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: const Icon(Icons.file_present),
-                          title: Text(item.fileUrl!),
-                          trailing: Text(item.fileSize ?? ''),
-                        ),
-                      if (item.status != BimbinganStatus.approved)
-                        ElevatedButton(
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(item.description, textAlign: TextAlign.left),
+                  if (item.fileUrl != null)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.attach_file),
+                      title: Text(item.fileUrl!),
+                      subtitle: Text(item.fileSize ?? ''),
+                    ),
+                  const SizedBox(height: 8),
+                  if (item.status != BimbinganStatus.approved)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
                           onPressed: onEdit,
-                          child: const Text('Edit'),
+                          child: Row(
+                            children: const [
+                              Icon(Icons.edit, size: 16),
+                              SizedBox(width: 4),
+                              Text('Edit'),
+                            ],
+                          ),
                         ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (item.status == BimbinganStatus.revisi)
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    color: Colors.orange,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '!',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
+                      ],
+                    ),
+                ],
               ),
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _getStatusIcon() {
+    switch (item.status) {
+      case BimbinganStatus.revisi:
+        return const Icon(Icons.warning, color: Colors.orange);
+      case BimbinganStatus.pending:
+        return const Icon(Icons.remove_circle, color: Colors.grey);
+      case BimbinganStatus.approved:
+        return const Icon(Icons.check_circle, color: Colors.green);
+    }
+  }
+
+  Color _getCardColor() {
+    if (item.status == BimbinganStatus.revisi) {
+      return Colors.orange.withOpacity(0.1);
+    }
+    return Colors.white;
+  }
+}
+
+enum BimbinganStatus { revisi, pending, approved }
+
+class BimbinganItem {
+  final String title;
+  final DateTime date;
+  final String description;
+  final String? fileUrl;
+  final String? fileSize;
+  final BimbinganStatus status;
+
+  BimbinganItem({
+    required this.title,
+    required this.date,
+    required this.description,
+    this.fileUrl,
+    this.fileSize,
+    required this.status,
+  });
 }

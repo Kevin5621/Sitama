@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Mahasiswa/m_settings_page.dart';
-import 'd_card_page.dart'; // Pastikan untuk mengimpor file ini
+import 'd_card_page.dart'; 
 
 void main() {
   runApp(const DHomePage());
