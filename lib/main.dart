@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/g_splash_page.dart';
+import 'pages/General/g_splash_page.dart';
 
 void main() {
   runApp(const MyApp());

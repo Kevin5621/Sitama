@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'm_settings_page.dart';
+import '../Mahasiswa/m_settings_page.dart';
 import 'd_card_page.dart'; // Pastikan untuk mengimpor file ini
 
 void main() {
