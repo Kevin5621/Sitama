@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'm_settings_page.dart'; 
+import 'm_settings_page.dart';
+import 'd_card_page.dart'; // Pastikan untuk mengimpor file ini
 
 void main() {
-  runApp(MyApp());
+  runApp(const DHomePage());
 }
 
-class MyApp extends StatelessWidget {
+class DHomePage extends StatelessWidget {
+  const DHomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,12 +17,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: StudentListPage(),
+      home: const StudentListPage(),
     );
   }
 }
 
 class StudentListPage extends StatefulWidget {
+  const StudentListPage({Key? key}) : super(key: key);
+
   @override
   _StudentListPageState createState() => _StudentListPageState();
 }
@@ -55,36 +60,45 @@ class _StudentListPageState extends State<StudentListPage> {
     if (index == 1) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MSettingsPage()),
+        MaterialPageRoute(builder: (context) => const MSettingsPage()),
       );
     }
+  }
+
+  void _navigateToStudentCard(String studentName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BimbinganPage(studentName: studentName),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('9:41'),
+        title: const Text('9:41'),
         centerTitle: true,
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Icon(Icons.signal_cellular_alt),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Icon(Icons.wifi),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Icon(Icons.battery_full),
           ),
         ],
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'AMRAN YOBIOKTABERA, M. KOM',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -95,11 +109,11 @@ class _StudentListPageState extends State<StudentListPage> {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search',
-                prefixIcon: Icon(Icons.search, size: 20),
+                prefixIcon: const Icon(Icons.search, size: 20),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
               ),
             ),
           ),
@@ -109,7 +123,7 @@ class _StudentListPageState extends State<StudentListPage> {
               children: [
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(5),
@@ -121,7 +135,7 @@ class _StudentListPageState extends State<StudentListPage> {
                         items: years.map((String year) {
                           return DropdownMenuItem<String>(
                             value: year,
-                            child: Text(year, style: TextStyle(fontSize: 14)),
+                            child: Text(year, style: const TextStyle(fontSize: 14)),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -133,10 +147,10 @@ class _StudentListPageState extends State<StudentListPage> {
                     ),
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(5),
@@ -148,7 +162,7 @@ class _StudentListPageState extends State<StudentListPage> {
                         items: programs.map((String program) {
                           return DropdownMenuItem<String>(
                             value: program,
-                            child: Text(program, style: TextStyle(fontSize: 14)),
+                            child: Text(program, style: const TextStyle(fontSize: 14)),
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
@@ -167,35 +181,39 @@ class _StudentListPageState extends State<StudentListPage> {
             child: ListView(
               children: [
                 ListTile(
-                  leading: CircleAvatar(
+                  leading: const CircleAvatar(
                     backgroundImage: NetworkImage('https://example.com/lucas_scott.jpg'),
                   ),
-                  title: Text('Lucas Scott'),
-                  subtitle: Text('Mengerjakan Bab 2C'),
+                  title: const Text('Lucas Scott'),
+                  subtitle: const Text('Mengerjakan Bab 2C'),
+                  onTap: () => _navigateToStudentCard('Lucas Scott'),
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    child: Icon(Icons.person),
+                    child: const Icon(Icons.person),
                     backgroundColor: Colors.grey[300],
                   ),
-                  title: Text('Nathan Salvador'),
-                  subtitle: Text('Mengerjakan Bab 2'),
+                  title: const Text('Nathan Salvador'),
+                  subtitle: const Text('Mengerjakan Bab 2'),
+                  onTap: () => _navigateToStudentCard('Nathan Salvador'),
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    child: Icon(Icons.person),
+                    child: const Icon(Icons.person),
                     backgroundColor: Colors.grey[300],
                   ),
-                  title: Text('Pertatie Sandiga'),
-                  subtitle: Text('Mengerjakan Bab 3'),
+                  title: const Text('Pertatie Sandiga'),
+                  subtitle: const Text('Mengerjakan Bab 3'),
+                  onTap: () => _navigateToStudentCard('Pertatie Sandiga'),
                 ),
                 ListTile(
                   leading: CircleAvatar(
-                    child: Icon(Icons.person),
+                    child: const Icon(Icons.person),
                     backgroundColor: Colors.grey[300],
                   ),
-                  title: Text('Pertamax Sandiga'),
-                  subtitle: Text('Mengerjakan Bab 3'),
+                  title: const Text('Pertamax Sandiga'),
+                  subtitle: const Text('Mengerjakan Bab 3'),
+                  onTap: () => _navigateToStudentCard('Pertamax Sandiga'),
                 ),
               ],
             ),
@@ -205,7 +223,7 @@ class _StudentListPageState extends State<StudentListPage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
