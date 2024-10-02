@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/General/g_splash_page.dart';
 
+
 void main() {
   runApp(const MyApp());
 }
