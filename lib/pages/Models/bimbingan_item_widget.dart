@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/bimbingan_item.dart';
-import 'status_icon.dart';
-import '../Models/bimbingan_item_model.dart' as sitama_bimbingan;
+// import 'status_icon.dart';
 
 class BimbinganItemWidget extends StatelessWidget {
   final BimbinganItem item;
@@ -28,7 +27,7 @@ class BimbinganItemWidget extends StatelessWidget {
               childrenPadding: EdgeInsets.zero,
               leading: Padding(
                 padding: const EdgeInsets.only(left: 16.0),
-                child: StatusIconHelper.getStatusIcon(item.status),
+                // child: StatusIconHelper.getStatusIcon(item.status),
               ),
               title: Center(child: Text(item.title)),
               subtitle: Center(child: Text(DateFormat('dd/MM/yyyy').format(item.date))),

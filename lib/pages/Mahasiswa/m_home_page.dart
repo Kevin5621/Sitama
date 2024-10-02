@@ -122,19 +122,21 @@ class _HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildBimbinganList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => BimbinganItem(
-          title: 'Bimbingan ${8 - index}',
-          date: DateTime(2024, 1, 28 - index),
-          status: index == 0 ? BimbinganStatus.revisi : BimbinganStatus.approved,
-          description: 'Berikut poin-poin laporan saya:\n1. Bab I - Pendahuluan: Latar belakang magang\n2. Pembahasan Kegiatan Magang\n3. Analisis dan Evaluasi',
-        ),
-        childCount: 2,
-      ),
-    );
-  }
+Widget _buildBimbinganList() {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: 2,
+    itemBuilder: (context, index) {
+      return BimbinganItem(
+        title: 'Bimbingan ${8 - index}',
+        date: DateTime(2024, 1, 28 - index),
+        status: index == 0 ? BimbinganStatus.revisi : BimbinganStatus.approved,
+        description: 'Berikut poin-poin laporan saya:\n1. Bab I - Pendahuluan: Latar belakang magang\n2. Pembahasan Kegiatan Magang\n3. Analisis dan Evaluasi',
+      );
+    },
+  );
+}
 
   Widget _buildLogBookSection(BuildContext context) {
     return SliverToBoxAdapter(
@@ -154,23 +156,25 @@ class _HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildLogBookList() {
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-                (context, index) => LogBookItemWidget(
-          item: LogBookItem(
-            week: 'Minggu ${index + 1}',
-            date: DateTime(2024, 1, 21 + index * 7),
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...', title: '',
-          ),
-          onEdit: (updatedItem) {
-            // Implement edit functionality
-          },
+Widget _buildLogBookList() {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    itemCount: 2,
+    itemBuilder: (context, index) {
+      return LogBookItemWidget(
+        item: LogBookItem(
+          week: 'Minggu ${index + 1}',
+          date: DateTime(2024, 1, 21 + index * 7),
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...', title: '',
         ),
-        childCount: 2,
-      ),
-    );
-  }
+        onEdit: (updatedItem) {
+          // Implement edit functionality
+        },
+      );
+    },
+  );
+}
 
   Widget _buildSectionHeader(BuildContext context, {required String title, required VoidCallback onTapSeeAll}) {
     return Padding(
