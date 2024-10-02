@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const CardMahasiswa(studentName: '',));
+  runApp(const MyApp());
 }
 
-class CardMahasiswa extends StatelessWidget {
-  const CardMahasiswa({Key? key, required String studentName}) : super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: 'DCard Page',
-      home: DCardPage(), // Menggunakan DCardPage
+      title: 'Bimbingan dan Log Book',
+      home: DCardPage(),
     );
   }
 }
@@ -36,6 +36,18 @@ class BimbinganItem {
   });
 }
 
+class LogBookItem {
+  final String week;
+  final String date;
+  final String description;
+
+  LogBookItem({
+    required this.week,
+    required this.date,
+    required this.description,
+  });
+}
+
 class DCardPage extends StatefulWidget {
   const DCardPage({Key? key}) : super(key: key);
 
@@ -44,22 +56,36 @@ class DCardPage extends StatefulWidget {
 }
 
 class _DCardPageState extends State<DCardPage> {
+  final PageController _pageController = PageController();
+  int _selectedIndex = 0;
+
   List<BimbinganItem> bimbinganData = [
     BimbinganItem(
-      id: 1,
-      title: 'Bimbingan 8',
-      date: '28/01/2024',
-      status: 'pending',
-      description: 'Kegiatan Anda: Berikut poin-poin laporan saya:',
+      id: 5,
+      title: 'Bimbingan 5',
+      date: '26/01/2024',
+      status: 'unread',
+      description: 'Kegiatan Anda: Silakan cek laporan saya yang belum dibaca.',
       points: [
-        'Bab I - Pendahuluan: Latar belakang magang',
-        'Pembahasan Kegiatan Magang',
-        'Analisis dan Evaluasi',
+        'Bab II - Metodologi: Metode yang digunakan',
+        'Analisis Data',
       ],
-      attachment: 'Lucas Bimbingan7.pdf',
+      attachment: 'Lucas Bimbingan5.pdf',
     ),
     BimbinganItem(
-      id: 2,
+      id: 6,
+      title: 'Bimbingan 6',
+      date: '25/01/2024',
+      status: 'revisi',
+      description: 'Kegiatan Anda: Mohon revisi laporan saya.',
+      points: [
+        'Bab III - Hasil dan Pembahasan',
+        'Kesimpulan dan Saran',
+      ],
+      attachment: 'Lucas Bimbingan4.pdf',
+    ),
+    BimbinganItem(
+      id: 7,
       title: 'Bimbingan 7',
       date: '27/01/2024',
       status: 'accepted',
@@ -72,17 +98,30 @@ class _DCardPageState extends State<DCardPage> {
       attachment: 'Lucas Bimbingan6.pdf',
     ),
     BimbinganItem(
-      id: 3,
-      title: 'Bimbingan 6',
-      date: '26/01/2024',
-      status: 'unread',
+      id: 8,
+      title: 'Bimbingan 8',
+      date: '28/01/2024',
+      status: 'pending',
       description: 'Kegiatan Anda: Berikut poin-poin laporan saya:',
       points: [
         'Bab I - Pendahuluan: Latar belakang magang',
         'Pembahasan Kegiatan Magang',
         'Analisis dan Evaluasi',
       ],
-      attachment: 'Lucas Bimbingan5.pdf',
+      attachment: 'Lucas Bimbingan7.pdf',
+    ),
+  ];
+
+  List<LogBookItem> logBookData = [
+    LogBookItem(
+      week: "Minggu 2",
+      date: "21/01/2024",
+      description: "Membuat desain UI/UX aplikasi MY Pertamin...",
+    ),
+    LogBookItem(
+      week: "Minggu 3",
+      date: "28/01/2024",
+      description: "Pengujian aplikasi MY Pertamina...",
     ),
   ];
 
@@ -100,39 +139,41 @@ class _DCardPageState extends State<DCardPage> {
     });
   }
 
+  void onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _pageController.jumpToPage(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bimbingan'),
+        title: const Text('Bimbingan dan Log Book'),
         backgroundColor: Colors.teal,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Profile and Industry Info
-            _buildProfileSection(),
-            _buildIndustrySection(),
-            _buildNilaiSection(),
-
-            // Tabs for Bimbingan and Log Book
-            _buildTabs(),
-
-            // List of Bimbingan Items
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: bimbinganData.length,
-              itemBuilder: (context, index) {
-                return BimbinganItemWidget(
-                  data: bimbinganData[index],
-                  onAccept: () => handleAccept(bimbinganData[index].id),
-                  onReject: () => handleReject(bimbinganData[index].id),
-                );
+      body: Column(
+        children: [
+          _buildProfileSection(),
+          _buildIndustrySection(),
+          _buildNilaiSection(),
+          _buildTabs(),
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
               },
+              children: [
+                _buildBimbinganList(),
+                _buildLogBookList(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -211,21 +252,64 @@ class _DCardPageState extends State<DCardPage> {
   }
 
   Widget _buildTabs() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            'Bimbingan',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            'Log Book',
-            style: TextStyle(fontSize: 16, color: Colors.grey),
-          ),
+          _buildTabItem("Bimbingan", 0),
+          _buildTabItem("Log Book", 1),
         ],
       ),
+    );
+  }
+
+  Widget _buildTabItem(String title, int index) {
+    return GestureDetector(
+      onTap: () => onTabTapped(index),
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: _selectedIndex == index ? Colors.black : Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 4),
+          if (_selectedIndex == index)
+            Container(
+              height: 3,
+              width: 60,
+              color: Colors.blue,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBimbinganList() {
+    return ListView.builder(
+      key: const ValueKey('bimbinganList'),
+      itemCount: bimbinganData.length,
+      itemBuilder: (context, index) {
+        return BimbinganItemWidget(
+          data: bimbinganData[index],
+          onAccept: () => handleAccept(bimbinganData[index].id),
+          onReject: () => handleReject(bimbinganData[index].id),
+        );
+      },
+    );
+  }
+
+  Widget _buildLogBookList() {
+    return ListView.builder(
+      key: const ValueKey('logBookList'),
+      itemCount: logBookData.length,
+      itemBuilder: (context, index) {
+        return LogBookItemWidget(data: logBookData[index]);
+      },
     );
   }
 }
@@ -252,14 +336,15 @@ class _BimbinganItemWidgetState extends State<BimbinganItemWidget> {
   Icon getStatusIcon() {
     switch (widget.data.status) {
       case 'accepted':
-        return const Icon(Icons.remove_circle,
-            color: Colors.black); // Tanda "-"
-      case 'pending':
-        return const Icon(Icons.error, color: Colors.red); // Tanda "!"
+        return const Icon(Icons.check_circle, color: Colors.green);
+      case 'rejected':
+        return const Icon(Icons.error, color: Colors.red);
+      case 'revisi':
+        return const Icon(Icons.add_circle, color: Colors.black);
       case 'unread':
-        return const Icon(Icons.add_circle, color: Colors.black); // Tanda "+"
+        return const Icon(Icons.remove_circle, color: Colors.black);
       default:
-        return const Icon(Icons.help, color: Colors.grey);
+        return const Icon(Icons.check_circle, color: Colors.green);
     }
   }
 
@@ -321,6 +406,30 @@ class _BimbinganItemWidgetState extends State<BimbinganItemWidget> {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class LogBookItemWidget extends StatelessWidget {
+  final LogBookItem data;
+
+  const LogBookItemWidget({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(8.0),
+      child: ListTile(
+        title: Text(data.week),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(data.date),
+            const SizedBox(height: 4),
+            Text(data.description),
+          ],
+        ),
       ),
     );
   }
