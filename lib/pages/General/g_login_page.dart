@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/Mahasiswa/m_home_page.dart';
+import 'package:flutter_application_1/pages/Dosen/d_home_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -79,6 +80,20 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const MHomePage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3A5BA0),
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  child: const Text('Masuk', style: TextStyle(color: Colors.white)),
+                ),
+                  // Sementara
+                  ElevatedButton(
+                  onPressed: () {
+                    // Navigasi ke DHomePage
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const DHomePage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(

@@ -37,12 +37,12 @@ class BimbinganItem {
 }
 
 class LogBookItem {
-  final String week;
+  final String title;
   final String date;
   final String description;
 
   LogBookItem({
-    required this.week,
+    required this.title,
     required this.date,
     required this.description,
   });
@@ -114,12 +114,12 @@ class _DCardPageState extends State<DCardPage> {
 
   List<LogBookItem> logBookData = [
     LogBookItem(
-      week: "Minggu 2",
+      title: "Minggu 2",
       date: "21/01/2024",
       description: "Membuat desain UI/UX aplikasi MY Pertamin...",
     ),
     LogBookItem(
-      week: "Minggu 3",
+      title: "Minggu 3",
       date: "28/01/2024",
       description: "Pengujian aplikasi MY Pertamina...",
     ),
@@ -421,7 +421,7 @@ class LogBookItemWidget extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(8.0),
       child: ListTile(
-        title: Text(data.week),
+        title: Text(data.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

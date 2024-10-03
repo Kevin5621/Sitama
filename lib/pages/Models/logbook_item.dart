@@ -32,7 +32,7 @@ class LogBookItemWidget extends StatelessWidget {
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          title: Text(item.week),
+          title: Text(item.title),
           subtitle: Text(DateFormat('dd/MM/yyyy').format(item.date)),
           children: [
             Padding(
@@ -80,7 +80,8 @@ class LogBookItemWidget extends StatelessWidget {
               onPressed: () {
                 onEdit(LogBookItem(
                   title: item.title,
-                  week: item.week,
+                  week:  item.week,
+
                   date: item.date,
                   description: newDescription,
                 ));

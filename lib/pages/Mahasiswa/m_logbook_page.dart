@@ -13,19 +13,19 @@ class LogBookPage extends StatefulWidget {
 class _LogBookPageState extends State<LogBookPage> {
   List<LogBookItem> logBookItems = [
     LogBookItem(
-      week: "Minggu 3",
+      title: "Minggu 3",
       date: DateTime(2024, 1, 21),
-      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", title: '',
+      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", week: '',
     ),
     LogBookItem(
-      week: "Minggu 2",
+      title: "Minggu 2",
       date: DateTime(2024, 1, 14),
-      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", title: '',
+      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", week: '',
     ),
     LogBookItem(
-      week: "Minggu 1",
+      title: "Minggu 1",
       date: DateTime(2024, 1, 7),
-      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", title: '',
+      description: "Membuat desain UI/UX aplikasi aplikasi MY Pertanim...", week: '',
     ),
   ];
 
@@ -33,7 +33,7 @@ class _LogBookPageState extends State<LogBookPage> {
 
   List<LogBookItem> get filteredItems {
     return logBookItems.where((item) {
-      return item.week.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+      return item.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           item.description.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
   }
@@ -73,7 +73,7 @@ class _LogBookPageState extends State<LogBookPage> {
                   onEdit: (updatedItem) {
                     setState(() {
                       int originalIndex = logBookItems.indexWhere((item) => 
-                        item.week == updatedItem.week && item.date == updatedItem.date
+                        item.title == updatedItem.title && item.date == updatedItem.date
                       );
                       if (originalIndex != -1) {
                         logBookItems[originalIndex] = updatedItem;
@@ -93,7 +93,7 @@ class _LogBookPageState extends State<LogBookPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        String week = '';
+        String title = '';
         DateTime date = DateTime.now();
         String description = '';
 
@@ -103,8 +103,8 @@ class _LogBookPageState extends State<LogBookPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: 'Week'),
-                onChanged: (value) => week = value,
+                decoration: const InputDecoration(labelText: 'title'),
+                onChanged: (value) => title = value,
               ),
               InkWell(
                 onTap: () async {
@@ -145,9 +145,9 @@ class _LogBookPageState extends State<LogBookPage> {
               onPressed: () {
                 setState(() {
                   logBookItems.add(LogBookItem(
-                    week: week,
+                    title: title,
                     date: date,
-                    description: description, title: '',
+                    description: description, week: '',
                   ));
                 });
                 Navigator.of(context).pop();

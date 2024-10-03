@@ -75,6 +75,7 @@ class _HomeContent extends StatelessWidget {
       ),
     );
   }
+  
 
   Widget _buildHeader() {
     return Container(
