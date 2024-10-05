@@ -1,4 +1,4 @@
-name: flutter_aplication_1
+name: sitama3
 description: Magang Sitama
 
 # Versi Flutter yang digunakan
@@ -32,6 +32,11 @@ flutter:
   
   # Assets
   assets:
-    - assets/sitama_logo.png
-    - assets/google_logo.png
-    - assets/login_logo.png
+    - assets/images/sitama_logo.png
+    - assets/images/google_logo.png
+    - assets/images/logo.png
+    - assets/images/home_pattern.png
+    - assets/images/loginIlustration.png
+    - assets/images/pattern.png
+    - assets/vectors/google.svg
+    - assets/vectors/login_vektor.svg
