@@ -1,9 +1,8 @@
 class AppConstants {
   // API Endpoints
-  static const String baseUrl = 'https://api.example.com';
-  static const String loginEndpoint = '/login';
-  static const String bimbinganEndpoint = '/bimbingan';
-
+  static const String baseUrl = 'http://192.168.56.1:8000/api/';
+  static const login = '${baseUrl}login';
+  
   // SharedPreferences Keys
   static const String tokenKey = 'auth_token';
   static const String userTypeKey = 'user_type';

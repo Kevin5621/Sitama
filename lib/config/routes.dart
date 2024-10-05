@@ -1,19 +1,44 @@
+import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
-import '../presentation/pages/common/splash_page.dart';
-import '../presentation/pages/common/start_page.dart';
-import '../presentation/pages/common/login_page.dart';
-import '../presentation/pages/mahasiswa/home_page.dart' as mahasiswa;
-import '../presentation/pages/mahasiswa/bimbingan_page.dart';
-import '../presentation/pages/mahasiswa/logbook_page.dart';
-import '../presentation/pages/mahasiswa/profile_page.dart' as mahasiswa;
-import '../presentation/pages/dosen/home_page.dart' as dosen;
-import '../presentation/pages/dosen/detail_mahasiswa_page.dart';
-import '../presentation/pages/dosen/input_nilai_page.dart';
-import '../presentation/pages/dosen/profile_page.dart' as dosen;
+import '../config/network/dio_client.dart';
+import '../data/repository/auth.dart';
+import '../domain/repository/auth.dart';
+import '../presentation/pages/common/splash.dart';
+import '../presentation/pages/common/welcome.dart';
+import '../presentation/pages/common/login.dart';
+import '../data/source/auth_api_service.dart';
+import '../data/source/auth_local_service.dart';
+import '../domain/usecase/is_logged_in.dart';
+import '../domain/usecase/signin.dart';
+import '../presentation/pages/Mahasiswa/home.dart' as mahasiswa;
+// import '../presentation/pages/mahasiswa/bimbingan_page.dart';
+// import '../presentation/pages/mahasiswa/logbook_page.dart';
+// import '../presentation/pages/mahasiswa/profile_page.dart' as mahasiswa;
+// import '../presentation/pages/dosen/home_page.dart' as dosen;
+// import '../presentation/pages/dosen/detail_mahasiswa_page.dart';
+// import '../presentation/pages/dosen/input_nilai_page.dart';
+// import '../presentation/pages/dosen/profile_page.dart' as dosen;
+
+final sl = GetIt.instance;
+
+void setupServiceLocator() {
+  sl.registerSingleton<DioClient>(DioClient());
+
+  //Service
+  sl.registerSingleton<AuthApiService>(AuthApiServiceImpl());
+  sl.registerSingleton<AuthLocalService>(AuthLocalServiceImpl());
+
+  // Repostory
+  sl.registerSingleton<AuthRepostory>(AuthRepostoryImpl());
+
+  // Usecase
+  sl.registerSingleton<SigninUseCase>(SigninUseCase());
+  sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
+}
 
 class AppRoutes {
   static const String splash = '/';
-  static const String start = '/start';
+  static const String welcome = '/welcome';
   static const String login = '/login';
   static const String mahasiswaHome = '/mahasiswa/home';
   static const String mahasiswaBimbingan = '/mahasiswa/bimbingan';
@@ -27,30 +52,30 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return MaterialPageRoute(builder: (_) => SplashPage());
-      case start:
-        return MaterialPageRoute(builder: (_) => StartPage());
+        return MaterialPageRoute(builder: (_) => const SplashPage());
+      case welcome:
+        return MaterialPageRoute(builder: (_) => const WelcomePages());
       case login:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => const LoginPage());
       case mahasiswaHome:
-        return MaterialPageRoute(builder: (_) => mahasiswa.HomePage());
-      case mahasiswaBimbingan:
-        return MaterialPageRoute(builder: (_) => BimbinganPage());
-      case mahasiswaLogbook:
-        return MaterialPageRoute(builder: (_) => LogbookPage());
-      case mahasiswaProfile:
-        return MaterialPageRoute(builder: (_) => mahasiswa.ProfilePage());
-      case dosenHome:
-        return MaterialPageRoute(builder: (_) => dosen.HomePage());
-      case dosenDetailMahasiswa:
-        return MaterialPageRoute(builder: (_) => DetailMahasiswaPage());
-      case dosenInputNilai:
-        return MaterialPageRoute(builder: (_) => InputNilaiPage());
-      case dosenProfile:
-        return MaterialPageRoute(builder: (_) => dosen.ProfilePage());
+        return MaterialPageRoute(builder: (_) => const mahasiswa.HomePage());
+      // case mahasiswaBimbingan:
+      //   return MaterialPageRoute(builder: (_) => BimbinganPage());
+      // case mahasiswaLogbook:
+      //   return MaterialPageRoute(builder: (_) => LogbookPage());
+      // case mahasiswaProfile:
+      //   return MaterialPageRoute(builder: (_) => mahasiswa.ProfilePage());
+      // case dosenHome:
+      //   return MaterialPageRoute(builder: (_) => dosen.HomePage());
+      // case dosenDetailMahasiswa:
+      //   return MaterialPageRoute(builder: (_) => DetailMahasiswaPage());
+      // case dosenInputNilai:
+      //   return MaterialPageRoute(builder: (_) => InputNilaiPage());
+      // case dosenProfile:
+      //   return MaterialPageRoute(builder: (_) => dosen.ProfilePage());
       default:
         return MaterialPageRoute(
-          builder: (_) => Scaffold(
+          builder: (_) => const Scaffold(
             body: Center(child: Text('Route tidak ditemukan')),
           ),
         );

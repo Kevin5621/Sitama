@@ -1,17 +1,24 @@
-name: flutter_application_1
-description: Aplikasi magang dan bimbingan SITAMA
+name: flutter_aplication_1
+description: Magang Sitama
 
 # Versi Flutter yang digunakan
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.3.3 <4.0.0'
 
 # Dependencies
 dependencies:
-  google_fonts: ^4.0.3
-  flutter:
-    sdk: flutter
-  intl: ^0.17.0
-  meta: ^1.7.0
+    flutter:
+        sdk: flutter
+    google_fonts: ^4.0.3
+    cupertino_icons: ^1.0.6
+    flutter_svg:
+    intl:
+    flutter_bloc:
+    dio:
+    get_it:
+    dartz:
+    logger:
+    shared_preferences:
 
 # Dev dependencies
 dev_dependencies:
