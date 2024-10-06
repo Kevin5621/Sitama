@@ -1,11 +1,133 @@
 // lib/presentation/pages/logbook_page.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:sitama3/domain/entities/logbook.dart';
+import 'package:sitama3/presentation/widgets/Models/logbook_dialog.dart';
+import 'package:sitama3/presentation/widgets/guidance/logbook_card.dart';
 import '../../../config/theme/theme.dart';
 import '../../widgets/Models/search_field.dart';
 
-class LogbookPage extends StatelessWidget {
+class LogbookPage extends StatefulWidget {
   const LogbookPage({Key? key}) : super(key: key);
+
+  @override
+  State<LogbookPage> createState() => _LogbookPageState();
+}
+
+class _LogbookPageState extends State<LogbookPage> {
+  List<LogbookItem> logbooks = [];
+  
+  get dateFormat => null;
+  
+  @override
+  void initState() {
+    super.initState();
+    final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+    // Initialize with dummy data
+    logbooks = [
+      LogbookItem(
+        id: '1',
+        weekNumber: 3,
+        date: dateFormat.parse("21/01/2024"),
+        description: "Membuat desain UI/UX aplikasi MY Pertanian. " + 
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        isExpanded: false,
+      ),
+      LogbookItem(
+        id: '2',
+        weekNumber: 2,
+        date: dateFormat.parse("10/01/2024"),
+        description: "Membuat desain UI/UX aplikasi MY Pertanian. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        isExpanded: false,
+      ),
+      LogbookItem(
+        id: '3',
+        weekNumber: 1,
+        date: dateFormat.parse("1/01/2024"),
+        description: "Membuat desain UI/UX aplikasi MY Pertanian. " +
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+        isExpanded: false,
+      ),
+    ];
+  }
+
+  void _toggleExpand(String id) {
+    setState(() {
+      final index = logbooks.indexWhere((item) => item.id == id);
+      if (index != -1) {
+        logbooks[index] = logbooks[index].copyWith(
+          isExpanded: !logbooks[index].isExpanded,
+        );
+      }
+    });
+  }
+
+  void _deleteLogbook(String id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Delete Logbook',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        content: Text(
+          'Are you sure you want to delete this logbook entry?',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: AppTheme.gray),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                logbooks.removeWhere((item) => item.id == id);
+              });
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Delete',
+              style: TextStyle(color: AppTheme.danger),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddEditDialog({LogbookItem? item}) {
+    showDialog(
+      context: context,
+      builder: (context) => LogbookDialog(
+        logbook: item,
+        onSave: (LogbookItem newItem) {
+          setState(() {
+            if (item != null) {
+              // Edit existing item
+              final index = logbooks.indexWhere((l) => l.id == item.id);
+              if (index != -1) {
+                logbooks[index] = newItem;
+              }
+            } else {
+              // Add new item
+              logbooks.add(newItem);
+            }
+          });
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +144,7 @@ class LogbookPage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              // Show TambahBimbinganDialog adapted for logbook
-            },
+            onPressed: () => _showAddEditDialog(),
             icon: Icon(Icons.add, color: AppTheme.primary),
           )
         ],
@@ -56,81 +176,21 @@ class LogbookPage extends StatelessWidget {
             ),
           ),
           const SliverToBoxAdapter(child: SizedBox(height: 20)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  _buildLogbookCard(
-                    weekNumber: 3,
-                    date: "21/01/2024",
-                    description: "Membuat desain UI/UX aplikasi MY Pertanian",
-                    theme: theme,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final logbook = logbooks[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: LogbookCard(
+                    logbook: logbook,
+                    onTap: () => _toggleExpand(logbook.id),
+                    onEdit: () => _showAddEditDialog(item: logbook),
+                    onDelete: () => _deleteLogbook(logbook.id),
                   ),
-                  _buildLogbookCard(
-                    weekNumber: 2,
-                    date: "21/01/2024",
-                    description: "Membuat desain UI/UX aplikasi MY Pertanian",
-                    theme: theme,
-                  ),
-                  _buildLogbookCard(
-                    weekNumber: 1,
-                    date: "21/01/2024",
-                    description: "Membuat desain UI/UX aplikasi MY Pertanian",
-                    theme: theme,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLogbookCard({
-    required int weekNumber,
-    required String date,
-    required String description,
-    required ThemeData theme,
-  }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
-            title: Text(
-              'Minggu $weekNumber',
-              style: theme.textTheme.headlineSmall,
-            ),
-            subtitle: Text(
-              date,
-              style: theme.textTheme.bodyMedium,
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.edit, color: AppTheme.primary),
-                  onPressed: () {
-                    // Implement edit functionality
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete, color: AppTheme.danger),
-                  onPressed: () {
-                    // Implement delete functionality
-                  },
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              description,
-              style: theme.textTheme.bodyLarge,
+                );
+              },
+              childCount: logbooks.length,
             ),
           ),
         ],

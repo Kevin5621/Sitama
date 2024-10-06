@@ -7,7 +7,7 @@ class LogbookInitial extends LogbookState {}
 class LogbookLoading extends LogbookState {}
 
 class LogbookLoaded extends LogbookState {
-  final List<Logbook> logbooks;
+  final List<LogbookItem> logbooks;
   LogbookLoaded(this.logbooks);
 }
 

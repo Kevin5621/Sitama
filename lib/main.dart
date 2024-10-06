@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sitama3/presentation/pages/Mahasiswa/home.dart';
 import './config/theme/theme.dart';
-import './presentation/pages/common/splash.dart';
+// import './presentation/pages/common/splash.dart';
 import './config/routes.dart';
 
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: const SplashPage(),
+      home: const HomePage(),
     );
   }
 }

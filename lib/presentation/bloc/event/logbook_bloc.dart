@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../event/loogbook_event.dart';
-import '../../../domain/entities/logbook.dart';
-import '../event/logbook_state.dart';
+import 'package:sitama3/domain/repository/logbook_repository.dart';
+import 'package:sitama3/presentation/bloc/event/logbook_state.dart';
+import 'package:sitama3/presentation/bloc/event/loogbook_event.dart';
 
 class LogbookBloc extends Bloc<LogbookEvent, LogbookState> {
   final LogbookRepository repository;

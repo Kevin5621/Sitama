@@ -63,4 +63,6 @@ class DateFormatter {
       return 'Baru saja';
     }
   }
+
+  static getWeekNumber(DateTime dateTime) {}
 }

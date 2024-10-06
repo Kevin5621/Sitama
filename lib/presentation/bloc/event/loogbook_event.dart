@@ -5,12 +5,12 @@ abstract class LogbookEvent {}
 class LoadLogbooks extends LogbookEvent {}
 
 class AddLogbookEvent extends LogbookEvent {
-  final Logbook logbook;
+  final LogbookItem logbook;
   AddLogbookEvent(this.logbook);
 }
 
 class UpdateLogbookEvent extends LogbookEvent {
-  final Logbook logbook;
+  final LogbookItem logbook;
   UpdateLogbookEvent(this.logbook);
 }
 
@@ -23,5 +23,3 @@ class ToggleLogbookExpansion extends LogbookEvent {
   final String id;
   ToggleLogbookExpansion(this.id);
 }
-
-

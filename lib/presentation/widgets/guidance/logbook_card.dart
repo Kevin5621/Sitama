@@ -4,7 +4,7 @@ import 'package:sitama3/config/theme/theme.dart';
 import 'package:sitama3/domain/entities/logbook.dart';
 
 class LogbookCard extends StatelessWidget {
-  final Logbook logbook;
+  final LogbookItem logbook;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
   final VoidCallback onTap;
@@ -35,7 +35,7 @@ class LogbookCard extends StatelessWidget {
                 style: theme.textTheme.headlineSmall,
               ),
               subtitle: Text(
-                DateFormat('dd/MM/yyyy').format(logbook.date),
+                DateFormat('dd/MM/yyyy').format(logbook.date as DateTime),
                 style: theme.textTheme.bodyMedium,
               ),
               trailing: Row(
