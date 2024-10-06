@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sitama3/presentation/pages/Mahasiswa/logbook.dart';
+import 'package:sitama3/presentation/pages/Mahasiswa/settings.dart';
 import '../../widgets/guidance/student_guidance_card.dart';
 import '../../../config/assets/app_images.dart';
 import '../../../config/theme/theme.dart';
 import '../Mahasiswa/guidance.dart';
-// import 'm_bimbingan_page.dart';
-// import 'm_logbook_page.dart';
-// import 'm_settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -23,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     _HomeContent(),
     const GuidancePage(),
     const LogbookPage(),
-    // const MSettingsPage(),
+    const MSettingsPage(),
   ];
 
   @override
@@ -41,7 +39,7 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.school), label: 'Bimbingan'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Log book'),
+          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Logbook'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -272,41 +270,4 @@ class LogBookItemWidget extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        String newDescription = item.description;
-        return AlertDialog(
-          title: const Text('Edit Log Book'),
-          content: TextField(
-            maxLines: 5,
-            decoration:
-                const InputDecoration(hintText: 'Enter new description'),
-            onChanged: (value) {
-              newDescription = value;
-            },
-            controller: TextEditingController(text: item.description),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            ElevatedButton(
-              child: const Text('Save'),
-              onPressed: () {
-                onEdit(LogBookItem(
-                  week: item.week,
-                  date: item.date,
-                  description: newDescription,
-                ));
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
