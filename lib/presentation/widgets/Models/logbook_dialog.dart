@@ -1,125 +1,133 @@
 import 'package:flutter/material.dart';
-import 'package:sitama3/utils/date_formatter.dart';
-import '../guidance/logbook_item.dart';
+import 'package:intl/intl.dart';
+import 'package:sitama3/domain/entities/logbook.dart';
 
 class LogbookDialog extends StatefulWidget {
-  final dynamic logbook;
+  final LogbookItem? logbook;
+  final Function(LogbookItem) onSave;
 
-  const LogbookDialog({Key? key, this.logbook, required onSave}) : super(key: key);
+  const LogbookDialog({
+    Key? key,
+    this.logbook,
+    required this.onSave,
+  }) : super(key: key);
 
   @override
-  _LogbookDialogState createState() => _LogbookDialogState();
+  State<LogbookDialog> createState() => _LogbookDialogState();
 }
 
 class _LogbookDialogState extends State<LogbookDialog> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  late TextEditingController _dateController;
-  DateTime? _selectedDate;
+  late TextEditingController _weekNumberController;
+  late DateTime _selectedDate;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.logbook?.title ?? '');
     _descriptionController = TextEditingController(text: widget.logbook?.description ?? '');
+    _weekNumberController = TextEditingController(
+      text: (widget.logbook?.weekNumber ?? '').toString(),
+    );
     _selectedDate = widget.logbook?.date ?? DateTime.now();
-    _dateController = TextEditingController(text: DateFormatter.toDisplayDate(_selectedDate!));
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
     _descriptionController.dispose();
-    _dateController.dispose();
+    _weekNumberController.dispose();
     super.dispose();
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate!,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _dateController.text = DateFormatter.toDisplayDate(picked);
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.logbook == null ? 'Add Logbook' : 'Edit Logbook'),
+      title: Text(
+        widget.logbook == null ? 'Add Logbook' : 'Edit Logbook',
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               TextFormField(
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+                controller: _weekNumberController,
+                decoration: const InputDecoration(
+                  labelText: 'Week Number',
+                ),
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return 'Please enter week number';
                   }
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
+              InkWell(
+                onTap: () async {
+                  final DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: _selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2025),
+                  );
+                  if (picked != null) {
+                    setState(() {
+                      _selectedDate = picked;
+                    });
+                  }
+                },
+                child: InputDecorator(
+                  decoration: const InputDecoration(
+                    labelText: 'Date',
+                  ),
+                  child: Text(
+                    DateFormat('dd/MM/yyyy').format(_selectedDate),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(
+                  labelText: 'Description',
+                ),
                 maxLines: 3,
-              ),
-              TextFormField(
-                controller: _dateController,
-                decoration: const InputDecoration(labelText: 'Date'),
-                readOnly: true,
-                onTap: () => _selectDate(context),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter description';
+                  }
+                  return null;
+                },
               ),
             ],
           ),
         ),
       ),
-      actions: <Widget>[
+      actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               final logbook = LogbookItem(
                 id: widget.logbook?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
-                title: _titleController.text,
+                weekNumber: int.parse(_weekNumberController.text),
+                date: _selectedDate,
                 description: _descriptionController.text,
-                date: _selectedDate!,
-                weekNumber: _selectedDate!.weekOfYear, 
+                isExpanded: false,
               );
-              Navigator.of(context).pop(logbook);
+              widget.onSave(logbook);
             }
           },
           child: const Text('Save'),
         ),
       ],
     );
-  }
-}
-
-extension DateTimeExtension on DateTime {
-  int get weekOfYear {
-    final startOfYear = DateTime(year, 1, 1);
-    final firstMonday = startOfYear.weekday;
-    final daysInFirstWeek = 8 - firstMonday;
-    final diff = difference(startOfYear);
-    var weeks = ((diff.inDays - daysInFirstWeek) / 7).ceil();
-    if (daysInFirstWeek > 3) {
-      weeks += 1;
-    }
-    return weeks;
   }
 }

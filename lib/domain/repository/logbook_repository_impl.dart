@@ -43,19 +43,19 @@ class LogbookRepositoryImpl implements LogbookRepository {
 
   @override
   Future<List<LogbookItem>> getLogbooks() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 5));
     return _logbooks;
   }
 
   @override
   Future<void> addLogbook(LogbookItem logbook) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 0));
     _logbooks.add(logbook);
   }
 
   @override
   Future<void> updateLogbook(LogbookItem logbook) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 0));
     final index = _logbooks.indexWhere((item) => item.id == logbook.id);
     if (index != -1) {
       _logbooks[index] = logbook;
@@ -64,7 +64,7 @@ class LogbookRepositoryImpl implements LogbookRepository {
 
   @override
   Future<void> deleteLogbook(String id) async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 0));
     _logbooks.removeWhere((item) => item.id == id);
   }
 }
