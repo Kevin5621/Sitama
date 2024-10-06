@@ -30,4 +30,6 @@ class LogbookItem {
       isExpanded: isExpanded ?? this.isExpanded,
     );
   }
+
+  static where(bool Function(dynamic item) param0) {}
 }

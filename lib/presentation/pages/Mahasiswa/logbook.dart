@@ -10,6 +10,8 @@ import 'package:sitama3/presentation/widgets/guidance/logbook_card.dart';
 import '../../../config/theme/theme.dart';
 import '../../widgets/Models/search_field.dart';
 
+enum SortOrder { ascending, descending }
+
 class LogbookPage extends StatefulWidget {
   const LogbookPage({Key? key}) : super(key: key);
 
@@ -19,6 +21,8 @@ class LogbookPage extends StatefulWidget {
 
 class _LogbookPageState extends State<LogbookPage> {
   late final LogbookBloc _logbookBloc;
+  String _searchQuery = '';
+  SortOrder _sortOrder = SortOrder.descending;
 
   @override
   void initState() {
@@ -78,6 +82,8 @@ class _LogbookPageState extends State<LogbookPage> {
   }
 
   Widget _buildLogbookList(BuildContext context, List<LogbookItem> logbooks) {
+    final filteredLogbooks = _filterAndSortLogbooks(logbooks);
+
     return CustomScrollView(
       slivers: [
         const SliverToBoxAdapter(child: SizedBox(height: 12)),
@@ -89,15 +95,18 @@ class _LogbookPageState extends State<LogbookPage> {
                 Expanded(
                   child: SearchField(
                     onChanged: (value) {
-                      // Implement search functionality
+                      setState(() {
+                        _searchQuery = value;
+                      });
                     },
-                    onFilterPressed: () {
-                      // Implement filter functionality
-                    },
+                    onFilterPressed: _showSortDialog,
                   ),
                 ),
                 const SizedBox(width: 10),
-                const Icon(Icons.filter_list_outlined, color: AppTheme.gray),
+                IconButton(
+                  icon: const Icon(Icons.sort),
+                  onPressed: _showSortDialog,
+                ),
               ],
             ),
           ),
@@ -106,7 +115,7 @@ class _LogbookPageState extends State<LogbookPage> {
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
-              final logbook = logbooks[index];
+              final logbook = filteredLogbooks[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: LogbookCard(
@@ -117,10 +126,71 @@ class _LogbookPageState extends State<LogbookPage> {
                 ),
               );
             },
-            childCount: logbooks.length,
+            childCount: filteredLogbooks.length,
           ),
         ),
       ],
+    );
+  }
+
+  List<LogbookItem> _filterAndSortLogbooks(List<LogbookItem> logbooks) {
+    final filtered = logbooks.where((logbook) {
+      final titleMatch = logbook.title.toLowerCase().contains(_searchQuery.toLowerCase());
+      final dateMatch = logbook.date.toString().contains(_searchQuery);
+      return titleMatch || dateMatch;
+    }).toList();
+
+    filtered.sort((a, b) {
+      final comparison = a.date.compareTo(b.date);
+      return _sortOrder == SortOrder.ascending ? comparison : -comparison;
+    });
+
+    return filtered;
+  }
+
+  void _showSortDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Sort Order'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text('Ascending'),
+                leading: Radio<SortOrder>(
+                  value: SortOrder.ascending,
+                  groupValue: _sortOrder,
+                  onChanged: (SortOrder? value) {
+                    if (value != null) {
+                      setState(() {
+                        _sortOrder = value;
+                      });
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+              ListTile(
+                title: const Text('Descending'),
+                leading: Radio<SortOrder>(
+                  value: SortOrder.descending,
+                  groupValue: _sortOrder,
+                  onChanged: (SortOrder? value) {
+                    if (value != null) {
+                      setState(() {
+                        _sortOrder = value;
+                      });
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
