@@ -1,4 +1,3 @@
-
 class SigninReqParams {
   final String username;
   final String password;

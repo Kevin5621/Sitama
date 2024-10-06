@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
-import '../config/network/dio_client.dart';
+import '../utils/api_helper.dart';
 import '../data/repository/auth.dart';
 import '../domain/repository/auth.dart';
 import '../presentation/pages/common/splash.dart';

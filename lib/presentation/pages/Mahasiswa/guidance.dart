@@ -10,7 +10,7 @@ class GuidancePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80.0,
-        title: Text(
+        title: const Text(
           'Bimbingan',
           style: TextStyle(
             fontSize: 24,
@@ -21,14 +21,14 @@ class GuidancePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           )
         ],
         backgroundColor: Colors.transparent,
       ),
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: SizedBox(height: 12)),
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -40,13 +40,13 @@ class GuidancePage extends StatelessWidget {
                       onFilterPressed: () {},
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.filter_list_outlined),
+                  const SizedBox(width: 10),
+                  const Icon(Icons.filter_list_outlined),
                 ],
               ),
             ),
           ),
-          SliverToBoxAdapter(child: SizedBox(height: 20)),
+          const SliverToBoxAdapter(child: SizedBox(height: 20)),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => GuidanceCard(

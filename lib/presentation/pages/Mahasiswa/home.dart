@@ -113,7 +113,7 @@ class _HomeContent extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Icon(Icons.arrow_forward_ios, size: 14),
+                  child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
               ],
             ),
@@ -147,7 +147,7 @@ class _HomeContent extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {},
-                  child: Icon(Icons.arrow_forward_ios, size: 14),
+                  child: const Icon(Icons.arrow_forward_ios, size: 14),
                 ),
               ],
             ),
@@ -188,7 +188,7 @@ class NotificationWidget extends StatelessWidget {
     return Center(
       child: Container(
         padding: const EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           color: AppTheme.warning,
           borderRadius: BorderRadius.circular(8),
@@ -200,8 +200,8 @@ class NotificationWidget extends StatelessWidget {
               color: AppTheme.white,
             ),
             const SizedBox(width: 8),
-            Expanded(
-              child: const Text(
+            const Expanded(
+              child: Text(
                 'Anda belum dijadwalkan seminar',
                 style: TextStyle(
                   color: AppTheme.white,

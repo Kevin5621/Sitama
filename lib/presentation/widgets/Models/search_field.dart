@@ -15,7 +15,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 44,
-      padding: EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
         color: AppTheme.white,
@@ -24,14 +24,14 @@ class SearchField extends StatelessWidget {
             color: AppTheme.black.withOpacity(0.25),
             spreadRadius: 0,
             blurRadius: 2,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: TextField(
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Search',
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: Icon(Icons.search),
           border: OutlineInputBorder(
             borderSide: BorderSide.none,
           ),

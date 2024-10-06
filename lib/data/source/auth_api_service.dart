@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import '../../config/constants.dart';
-import '../../config/network/dio_client.dart';
+import '../../utils/api_helper.dart';
 import '../models/signin_req_params.dart';
 import '../../config/routes.dart';
 

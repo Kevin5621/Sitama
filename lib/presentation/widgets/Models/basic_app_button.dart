@@ -33,9 +33,9 @@ class BasicAppButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(55),
         ),
-        minimumSize: Size.fromHeight(65),
+        minimumSize: const Size.fromHeight(65),
       ),
-      child: CircularProgressIndicator(),
+      child: const CircularProgressIndicator(),
     );
   }
 
@@ -47,11 +47,11 @@ class BasicAppButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(55),
         ),
-        minimumSize: Size.fromHeight(65),
+        minimumSize: const Size.fromHeight(65),
       ),
       child: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: AppTheme.white,
           fontWeight: FontWeight.bold,
         ),

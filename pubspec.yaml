@@ -33,7 +33,6 @@ flutter:
   # Assets
   assets:
     - assets/images/sitama_logo.png
-    - assets/images/google_logo.png
     - assets/images/logo.png
     - assets/images/home_pattern.png
     - assets/images/loginIlustration.png
