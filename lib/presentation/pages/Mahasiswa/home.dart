@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sitama3/presentation/pages/Mahasiswa/logbook.dart';
 import '../../widgets/guidance/student_guidance_card.dart';
 import '../../../config/assets/app_images.dart';
 import '../../../config/theme/theme.dart';
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     _HomeContent(),
     const GuidancePage(),
-    // const LogBookPage(),
+    const LogbookPage(),
     // const MSettingsPage(),
   ];
 
