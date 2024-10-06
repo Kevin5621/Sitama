@@ -1,4 +1,3 @@
-// lib/domain/entities/logbook.dart
 class Logbook {
   final String id;
   final int weekNumber;
@@ -31,7 +30,6 @@ class Logbook {
   }
 }
 
-// lib/domain/repositories/logbook_repository.dart
 abstract class LogbookRepository {
   Future<List<Logbook>> getLogbooks();
   Future<void> addLogbook(Logbook logbook);

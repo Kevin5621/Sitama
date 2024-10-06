@@ -11,8 +11,8 @@ import '../data/source/auth_local_service.dart';
 import '../domain/usecase/is_logged_in.dart';
 import '../domain/usecase/signin.dart';
 import '../presentation/pages/Mahasiswa/home.dart' as mahasiswa;
-// import '../presentation/pages/mahasiswa/bimbingan_page.dart';
-// import '../presentation/pages/mahasiswa/logbook_page.dart';
+import '../presentation/pages/mahasiswa/guidance.dart';
+import '../presentation/pages/mahasiswa/logbook.dart';
 // import '../presentation/pages/mahasiswa/profile_page.dart' as mahasiswa;
 // import '../presentation/pages/dosen/home_page.dart' as dosen;
 // import '../presentation/pages/dosen/detail_mahasiswa_page.dart';
@@ -59,10 +59,10 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case mahasiswaHome:
         return MaterialPageRoute(builder: (_) => const mahasiswa.HomePage());
-      // case mahasiswaBimbingan:
-      //   return MaterialPageRoute(builder: (_) => BimbinganPage());
-      // case mahasiswaLogbook:
-      //   return MaterialPageRoute(builder: (_) => LogbookPage());
+      case mahasiswaBimbingan:
+        return MaterialPageRoute(builder: (_) => const GuidancePage());
+      case mahasiswaLogbook:
+        return MaterialPageRoute(builder: (_) => const LogbookPage());
       // case mahasiswaProfile:
       //   return MaterialPageRoute(builder: (_) => mahasiswa.ProfilePage());
       // case dosenHome:
