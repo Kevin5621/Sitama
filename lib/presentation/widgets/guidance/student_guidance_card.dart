@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../config/theme/theme.dart';
 
-enum GuidanceStatus { revisi, pending, approved }
+enum GuidanceStatus { revisi, add, pending, approved }
 
 class GuidanceCard extends StatelessWidget {
   final String title;
@@ -49,6 +49,8 @@ class GuidanceCard extends StatelessWidget {
         return const Icon(Icons.warning, color: AppTheme.danger);
       case GuidanceStatus.pending:
         return const Icon(Icons.remove_circle, color: Colors.grey);
+      case GuidanceStatus.add:
+        return const Icon(Icons.add_circle, color: Colors.grey);
       case GuidanceStatus.approved:
         return const Icon(Icons.check_circle, color: Colors.green);
     }

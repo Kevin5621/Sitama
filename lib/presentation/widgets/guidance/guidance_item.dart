@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-enum BimbinganStatus { revisi, pending, approved }
+enum BimbinganStatus { revisi, add, pending, approved }
 
 class BimbinganItem extends StatelessWidget {
   final String title;
@@ -51,6 +51,8 @@ class BimbinganItem extends StatelessWidget {
         return const Icon(Icons.warning, color: Colors.orange);
       case BimbinganStatus.pending:
         return const Icon(Icons.remove_circle, color: Colors.grey);
+      case BimbinganStatus.add:
+        return const Icon(Icons.add_circle, color: Colors.grey);
       case BimbinganStatus.approved:
         return const Icon(Icons.check_circle, color: Colors.green);
     }
