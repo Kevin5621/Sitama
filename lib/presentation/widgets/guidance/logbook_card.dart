@@ -31,11 +31,11 @@ class LogbookCard extends StatelessWidget {
           children: [
             ListTile(
               title: Text(
-                'Minggu ${logbook.weekNumber}',
+                logbook.title,  
                 style: theme.textTheme.headlineSmall,
               ),
               subtitle: Text(
-                DateFormat('dd/MM/yyyy').format(logbook.date as DateTime),
+                DateFormat('dd/MM/yyyy').format(logbook.date),
                 style: theme.textTheme.bodyMedium,
               ),
               trailing: Row(
@@ -52,6 +52,7 @@ class LogbookCard extends StatelessWidget {
                 ],
               ),
             ),
+
             if (logbook.isExpanded)
               Padding(
                 padding: const EdgeInsets.all(16.0),

@@ -1,29 +1,31 @@
 class LogbookItem {
   final String id;
   final int weekNumber;
-  final DateTime date;  // Ubah String menjadi DateTime
+  final DateTime date;
   final String description;
   final bool isExpanded;
 
   LogbookItem({
     required this.id,
     required this.weekNumber,
-    required this.date,  // Ubah di sini juga
+    required this.date,
     required this.description,
     this.isExpanded = false,
   });
 
+  String get title => 'Logbook Week $weekNumber';
+
   LogbookItem copyWith({
     String? id,
     int? weekNumber,
-    DateTime? date,  // Ubah tipe di sini juga
+    DateTime? date,
     String? description,
     bool? isExpanded,
   }) {
     return LogbookItem(
       id: id ?? this.id,
       weekNumber: weekNumber ?? this.weekNumber,
-      date: date ?? this.date,  // Pastikan tipe sesuai
+      date: date ?? this.date,
       description: description ?? this.description,
       isExpanded: isExpanded ?? this.isExpanded,
     );
