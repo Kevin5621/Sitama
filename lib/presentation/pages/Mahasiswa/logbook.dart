@@ -1,9 +1,14 @@
-// lib/presentation/pages/logbook_page.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sitama3/domain/entities/logbook.dart';
+import 'package:sitama3/domain/repository/logbook_repository_impl.dart';
+import 'package:sitama3/presentation/bloc/event/logbook_bloc.dart';
+import 'package:sitama3/presentation/bloc/event/logbook_state.dart';
+import 'package:sitama3/presentation/bloc/event/loogbook_event.dart';
 import 'package:sitama3/presentation/widgets/Models/logbook_dialog.dart';
 import 'package:sitama3/presentation/widgets/guidance/logbook_card.dart';
+import 'package:sitama3/domain/repository/logbook_repository.dart';
 import '../../../config/theme/theme.dart';
 import '../../widgets/Models/search_field.dart';
 
@@ -15,143 +20,53 @@ class LogbookPage extends StatefulWidget {
 }
 
 class _LogbookPageState extends State<LogbookPage> {
-  List<LogbookItem> logbooks = [];
-  
-  get dateFormat => null;
-  
+  final dateFormat = DateFormat('dd/MM/yyyy');
+  late final LogbookRepository repository;
+
   @override
   void initState() {
     super.initState();
-    final DateFormat dateFormat = DateFormat('dd/MM/yyyy');
-    // Initialize with dummy data
-    logbooks = [
-      LogbookItem(
-        id: '1',
-        weekNumber: 3,
-        date: dateFormat.parse("21/01/2024"),
-        description: "Membuat desain UI/UX aplikasi MY Pertanian. " + 
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        isExpanded: false,
-      ),
-      LogbookItem(
-        id: '2',
-        weekNumber: 2,
-        date: dateFormat.parse("10/01/2024"),
-        description: "Membuat desain UI/UX aplikasi MY Pertanian. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        isExpanded: false,
-      ),
-      LogbookItem(
-        id: '3',
-        weekNumber: 1,
-        date: dateFormat.parse("1/01/2024"),
-        description: "Membuat desain UI/UX aplikasi MY Pertanian. " +
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-        isExpanded: false,
-      ),
-    ];
+    repository = LogbookRepositoryImpl(); 
   }
 
-  void _toggleExpand(String id) {
-    setState(() {
-      final index = logbooks.indexWhere((item) => item.id == id);
-      if (index != -1) {
-        logbooks[index] = logbooks[index].copyWith(
-          isExpanded: !logbooks[index].isExpanded,
-        );
-      }
-    });
-  }
-
-  void _deleteLogbook(String id) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Delete Logbook',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        content: Text(
-          'Are you sure you want to delete this logbook entry?',
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: AppTheme.gray),
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LogbookBloc(repository)..add(LoadLogbooks()),
+      child: BlocBuilder<LogbookBloc, LogbookState>(
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: AppTheme.background,
+            appBar: AppBar(
+              toolbarHeight: 80.0,
+              title: Text(
+                'Log Book',
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () => _showAddEditDialog(context),
+                  icon: const Icon(Icons.add, color: AppTheme.primary),
+                )
+              ],
+              backgroundColor: Colors.transparent,
+              elevation: 0,
             ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                logbooks.removeWhere((item) => item.id == id);
-              });
-              Navigator.pop(context);
-            },
-            child: Text(
-              'Delete',
-              style: TextStyle(color: AppTheme.danger),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddEditDialog({LogbookItem? item}) {
-    showDialog(
-      context: context,
-      builder: (context) => LogbookDialog(
-        logbook: item,
-        onSave: (LogbookItem newItem) {
-          setState(() {
-            if (item != null) {
-              // Edit existing item
-              final index = logbooks.indexWhere((l) => l.id == item.id);
-              if (index != -1) {
-                logbooks[index] = newItem;
-              }
-            } else {
-              // Add new item
-              logbooks.add(newItem);
-            }
-          });
+            body: _buildBody(context, state),
+          );
         },
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
-    return Scaffold(
-      backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        toolbarHeight: 80.0,
-        title: Text(
-          'Log Book',
-          style: theme.textTheme.headlineLarge,
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () => _showAddEditDialog(),
-            icon: Icon(Icons.add, color: AppTheme.primary),
-          )
-        ],
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: CustomScrollView(
+  Widget _buildBody(BuildContext context, LogbookState state) {
+    if (state is LogbookLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is LogbookError) {
+      return Center(child: Text(state.message));
+    } else if (state is LogbookLoaded) {
+      return CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverToBoxAdapter(
@@ -170,7 +85,7 @@ class _LogbookPageState extends State<LogbookPage> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Icon(Icons.filter_list_outlined, color: AppTheme.gray),
+                  const Icon(Icons.filter_list_outlined, color: AppTheme.gray),
                 ],
               ),
             ),
@@ -179,21 +94,76 @@ class _LogbookPageState extends State<LogbookPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                final logbook = logbooks[index];
+                final logbook = state.logbooks[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: LogbookCard(
                     logbook: logbook,
-                    onTap: () => _toggleExpand(logbook.id),
-                    onEdit: () => _showAddEditDialog(item: logbook),
-                    onDelete: () => _deleteLogbook(logbook.id),
+                    onTap: () => context.read<LogbookBloc>().add(
+                          ToggleLogbookExpansion(logbook.id),
+                        ),
+                    onEdit: () => _showAddEditDialog(context, item: logbook),
+                    onDelete: () => _showDeleteDialog(context, logbook.id),
                   ),
                 );
               },
-              childCount: logbooks.length,
+              childCount: state.logbooks.length,
             ),
           ),
         ],
+      );
+    }
+    return const Center(child: Text('Initial State'));
+  }
+
+  void _showDeleteDialog(BuildContext context, String id) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Delete Logbook',
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        content: Text(
+          'Are you sure you want to delete this logbook entry?',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppTheme.gray),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              context.read<LogbookBloc>().add(DeleteLogbookEvent(id));
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: AppTheme.danger),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAddEditDialog(BuildContext context, {LogbookItem? item}) {
+    showDialog(
+      context: context,
+      builder: (context) => LogbookDialog(
+        logbook: item,
+        onSave: (LogbookItem newItem) {
+          if (item != null) {
+            context.read<LogbookBloc>().add(UpdateLogbookEvent(newItem));
+          } else {
+            context.read<LogbookBloc>().add(AddLogbookEvent(newItem));
+          }
+          Navigator.pop(context);
+        },
       ),
     );
   }

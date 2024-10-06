@@ -5,8 +5,6 @@ import '../guidance/logbook_item.dart';
 class LogbookDialog extends StatefulWidget {
   final dynamic logbook;
 
-  // final LogbookItem? logbook;
-
   const LogbookDialog({Key? key, this.logbook, required onSave}) : super(key: key);
 
   @override
@@ -100,7 +98,7 @@ class _LogbookDialogState extends State<LogbookDialog> {
                 title: _titleController.text,
                 description: _descriptionController.text,
                 date: _selectedDate!,
-                weekNumber: _selectedDate!.weekOfYear, // Assuming you have a getter for weekOfYear
+                weekNumber: _selectedDate!.weekOfYear, 
               );
               Navigator.of(context).pop(logbook);
             }
@@ -112,7 +110,6 @@ class _LogbookDialogState extends State<LogbookDialog> {
   }
 }
 
-// Extension to get week of year
 extension DateTimeExtension on DateTime {
   int get weekOfYear {
     final startOfYear = DateTime(year, 1, 1);
