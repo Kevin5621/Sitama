@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sitama3/presentation/pages/Mahasiswa/home.dart';
+import 'package:sitama3/UI/pages/Mahasiswa/home.dart';
 import './config/theme/theme.dart';
 // import './presentation/pages/common/splash.dart';
 import './config/routes.dart';

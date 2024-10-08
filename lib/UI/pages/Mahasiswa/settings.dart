@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sitama3/presentation/bloc/event/add_industry.dart';
-import 'package:sitama3/presentation/bloc/event/reset_psw.dart';
-import 'package:sitama3/presentation/pages/common/welcome.dart';
+import 'package:sitama3/UI/bloc/event/add_industry.dart';
+import 'package:sitama3/UI/bloc/event/reset_psw.dart';
+import 'package:sitama3/UI/pages/common/welcome.dart';
 
 class MSettingsPage extends StatelessWidget {
   const MSettingsPage({Key? key}) : super(key: key);

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_state_cubit.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../../config/assets/app_images.dart';
-import '../common/welcome.dart';
+import 'welcome.dart';
 import '../Mahasiswa/home.dart';
 
 class SplashPage extends StatefulWidget {

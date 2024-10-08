@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sitama3/presentation/pages/Mahasiswa/logbook.dart';
-import 'package:sitama3/presentation/pages/Mahasiswa/settings.dart';
+import 'package:sitama3/UI/pages/Mahasiswa/logbook.dart';
+import 'package:sitama3/UI/pages/Mahasiswa/settings.dart';
 import '../../widgets/guidance/student_guidance_card.dart';
 import '../../../config/assets/app_images.dart';
 import '../../../config/theme/theme.dart';
-import '../Mahasiswa/guidance.dart';
+import 'guidance.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

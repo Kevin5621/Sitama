@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../auth/auth_state.dart';
+import 'auth_state.dart';
 import '../../../domain/usecase/is_logged_in.dart';
 import '../../../config/routes.dart';
 

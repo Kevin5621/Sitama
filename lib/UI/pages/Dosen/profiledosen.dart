@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sitama3/presentation/bloc/event/reset_psw.dart';
-import 'package:sitama3/presentation/pages/common/welcome.dart';
+import 'package:sitama3/UI/bloc/event/reset_psw.dart';
+import 'package:sitama3/UI/pages/common/welcome.dart';
 
 class ProfileDosen extends StatelessWidget {
   const ProfileDosen({Key? key}) : super(key: key);
