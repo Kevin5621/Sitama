@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sitama3/UI/bloc/event/logbook_bloc.dart';
+import 'package:sitama3/UI/bloc/event/logbook_state.dart';
+import 'package:sitama3/UI/bloc/event/loogbook_event.dart';
+import 'package:sitama3/UI/widgets/Models/logbook_dialog.dart';
+import 'package:sitama3/UI/widgets/guidance/logbook_card.dart';
 import 'package:sitama3/domain/entities/logbook.dart';
 import 'package:sitama3/domain/repository/logbook_repository_impl.dart';
-import 'package:sitama3/presentation/bloc/event/logbook_bloc.dart';
-import 'package:sitama3/presentation/bloc/event/logbook_state.dart';
-import 'package:sitama3/presentation/bloc/event/loogbook_event.dart';
-import 'package:sitama3/presentation/widgets/Models/logbook_dialog.dart';
-import 'package:sitama3/presentation/widgets/guidance/logbook_card.dart';
 import '../../../config/theme/theme.dart';
 import '../../widgets/Models/search_field.dart';
 
