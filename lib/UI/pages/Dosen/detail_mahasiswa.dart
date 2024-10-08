@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sitama3/domain/entities/logbook.dart'; // Import LogbookItem
-import 'package:sitama3/presentation/widgets/guidance/logbook_card.dart'; // Import LogbookCard
-import 'package:sitama3/presentation/widgets/guidance/student_guidance_card.dart'; // Import GuidanceCard
-import 'package:sitama3/presentation/pages/dosen/input_nilai.dart';
+import 'package:sitama3/UI/widgets/guidance/logbook_card.dart'; // Import LogbookCard
+import 'package:sitama3/UI/widgets/guidance/student_guidance_card.dart'; // Import GuidanceCard
+import 'package:sitama3/UI/pages/Dosen/input_nilai.dart';
 
 class DetailMahasiswa extends StatelessWidget {
   const DetailMahasiswa({Key? key}) : super(key: key);
