@@ -22,7 +22,7 @@ class MSettingsPage extends StatelessWidget {
             children: [
               const CircleAvatar(
                 radius: 50,
-                backgroundImage: AssetImage('assets/profile_image.png'),
+                backgroundImage: AssetImage('assets/home_pattern.png'),
               ),
               const SizedBox(height: 16),
               const Text(

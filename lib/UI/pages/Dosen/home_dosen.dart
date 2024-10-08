@@ -209,21 +209,21 @@ class ProfileCard extends StatelessWidget {
               ],
             ),
             const Spacer(),
-            IconButton(
-              icon: Icon(Icons.arrow_forward_ios),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => DetailMahasiswa(
-                            imageUrl: imageUrl,
-                            name: name,
-                            nim: nim,
-                            kelas: kelas,
-                          )),
-                );
-              },
-            ),
+            // IconButton(
+            //   icon: Icon(Icons.arrow_forward_ios),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => DetailMahasiswa(
+            //                 imageUrl: imageUrl,
+            //                 name: name,
+            //                 nim: nim,
+            //                 kelas: kelas,
+            //               )),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
