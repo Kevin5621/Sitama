@@ -31,4 +31,10 @@ class AuthRepostoryImpl extends AuthRepostory{
     return await sl<AuthLocalService>().isLoggedIn();
   }
   
+  @override
+  Future<Either> logout() async {
+    Either resullt = await sl<AuthLocalService>().logout();
+    return resullt;
+  }
+  
 }

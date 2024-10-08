@@ -12,7 +12,6 @@ abstract class AuthApiService {
 class AuthApiServiceImpl extends AuthApiService {
   @override
   Future<Either> signin(SigninReqParams request) async {
-    print('request: ${request.toMap()}');
     try {
       var response =
           await sl<DioClient>().post(ApiUrls.login, data: request.toMap());
@@ -20,10 +19,8 @@ class AuthApiServiceImpl extends AuthApiService {
       return Right(response);
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error response: ${e.response!.data['errors']['message']}');
         return Left(e.response!.data['errors']['message'].toString());
       } else {
-        print('Error message: ${e.message}');
         return Left(e.message);
       }
     }

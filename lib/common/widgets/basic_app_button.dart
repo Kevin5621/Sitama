@@ -8,11 +8,13 @@ import 'package:sistem_magang/core/config/themes/app_color.dart';
 class BasicAppButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String title;
+  final bool height;
 
   const BasicAppButton({
     super.key,
     required this.onPressed,
     required this.title,
+    this.height = true,
   });
 
   @override
@@ -34,7 +36,7 @@ class BasicAppButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(55),
         ),
-        minimumSize: Size.fromHeight(65),
+        minimumSize: height ? Size.fromHeight(65) : null,
       ),
       child: CircularProgressIndicator(),
     );
@@ -48,7 +50,7 @@ class BasicAppButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(55),
         ),
-        minimumSize: Size.fromHeight(65),
+        minimumSize: height ? Size.fromHeight(65) : null,
       ),
       child: Text(
         title,

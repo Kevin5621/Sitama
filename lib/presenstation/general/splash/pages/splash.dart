@@ -4,6 +4,7 @@ import 'package:sistem_magang/common/bloc/auth/auth_state.dart';
 import 'package:sistem_magang/common/bloc/auth/auth_state_cubit.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
 import 'package:sistem_magang/presenstation/general/welcome/pages/welcome.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/pages/lecturer_home.dart';
 import 'package:sistem_magang/presenstation/student/home/pages/home.dart';
 
 class SplashPage extends StatefulWidget {
@@ -43,17 +44,19 @@ class _SplashPageState extends State<SplashPage> {
       MaterialPageRoute(
         builder: (BuildContext context) => BlocProvider(
           create: (context) => AuthStateCubit()..appStarted(),
-          child: BlocBuilder<AuthStateCubit, AuthState>(
-            builder: (context, state) {
-              if(state is Authenticated){
-                return HomePage();
-              }
-              if(state is UnAuthenticated){
-                return WelcomePages();
-              }
-              return Container();
+          child:
+              BlocBuilder<AuthStateCubit, AuthState>(builder: (context, state) {
+            if (state is AuthenticatedStudent) {
+              return HomePage();
             }
-          ),
+            if (state is AuthenticatedLecturer) {
+              return LecturerHomePage();
+            }
+            if (state is UnAuthenticated) {
+              return WelcomePages();
+            }
+            return Container();
+          }),
         ),
       ),
     );

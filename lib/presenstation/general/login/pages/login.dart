@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_magang/common/bloc/button/button_state.dart';
 import 'package:sistem_magang/common/bloc/button/button_state_cubit.dart';
 import 'package:sistem_magang/common/widgets/basic_app_button.dart';
@@ -9,6 +10,7 @@ import 'package:sistem_magang/core/config/assets/app_images.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/data/models/signin_req_params.dart';
 import 'package:sistem_magang/domain/usecases/signin.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/pages/lecturer_home.dart';
 import 'package:sistem_magang/presenstation/student/home/pages/home.dart';
 import 'package:sistem_magang/service_locator.dart';
 
@@ -37,12 +39,27 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocProvider(
         create: (context) => ButtonStateCubit(),
         child: BlocListener<ButtonStateCubit, ButtonState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is ButtonSuccessState) {
-              Navigator.pushReplacement(
-                context, 
-                MaterialPageRoute(builder: (BuildContext context) => HomePage())
-              );
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              var role = sharedPreferences.getString('role');
+
+              if (role == 'Student') {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => HomePage(),
+                  ),
+                );
+              } else {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => LecturerHomePage(),
+                  ),
+                );
+              }
             }
             if (state is ButtonFailurState) {
               var snackBar = SnackBar(content: Text(state.errorMessage));

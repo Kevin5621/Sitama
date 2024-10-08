@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sistem_magang/common/widgets/student_guidance_card.dart';
+import 'package:sistem_magang/common/widgets/student_log_book_card.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/domain/entities/student_home_entity.dart';
 import 'package:sistem_magang/presenstation/student/guidance/pages/guidance.dart';
+import 'package:sistem_magang/presenstation/student/home/bloc/student_display_cubit.dart';
+import 'package:sistem_magang/presenstation/student/home/bloc/student_display_state.dart';
+import 'package:sistem_magang/presenstation/student/logbook/pages/logbook.dart';
+import 'package:sistem_magang/presenstation/student/profile/pages/profile.dart';
 // import 'm_bimbingan_page.dart';
 // import 'm_logbook_page.dart';
 // import 'm_settings_page.dart';
@@ -20,16 +27,16 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    _HomeContent(),
     const GuidancePage(),
-    // const LogBookPage(),
-    // const MSettingsPage(),
+    const LogBookPage(),
+    const ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body:
+          _currentIndex == 0 ? _buildHomeContent() : _pages[_currentIndex - 1],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -47,133 +54,182 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  Widget _buildHomeContent() {
+    return _HomeContent(
+      allGuidances: () {
+        setState(() {
+          _currentIndex = 1; // Navigate to the 'Guidance' page
+        });
+      },
+      allLogBooks: () {
+        setState(() {
+          _currentIndex = 2; // Navigate to the 'Logbook' page
+        });
+      },
+    );
+  }
 }
 
 class _HomeContent extends StatelessWidget {
+  final VoidCallback allGuidances;
+  final VoidCallback allLogBooks;
+
+  const _HomeContent(
+      {super.key, required this.allGuidances, required this.allLogBooks});
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                height: 160,
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(AppImages.homePattern),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'HELLO,',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
+    return BlocProvider(
+      create: (context) => StudentDisplayCubit()..displayStudent(),
+      child: BlocBuilder<StudentDisplayCubit, StudentDisplayState>(
+        builder: (context, state) {
+          if (state is StudentLoading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is StudentLoaded) {
+            return CustomScrollView(
+              slivers: [
+                _header(state.studentHomeEntity),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 28),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Bimbingan Terbaru',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: allGuidances,
+                          child: Icon(Icons.arrow_forward_ios, size: 14),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Lucas Scott',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                ),
+                _guidancesList(state.studentHomeEntity),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 28),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Log Book Terbaru',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: allLogBooks,
+                          child: Icon(Icons.arrow_forward_ios, size: 14),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                color: Colors.white,
-                child: NotificationWidget(
-                  onClose: () {},
-                ),
-              ),
-            ],
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Bimbingan Terbaru',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Icon(Icons.arrow_forward_ios, size: 14),
-                ),
+                _logBooksList(state.studentHomeEntity),
               ],
-            ),
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => GuidanceCard(
-              title: 'Bimbingan ${8 - index}',
-              date: DateTime(2024, 1, 28 - index),
-              status:
-                  index == 0 ? GuidanceStatus.revisi : GuidanceStatus.approved,
-              description:
-                  'Berikut poin-poin laporan saya:\n1. Bab I - Pendahuluan: Latar belakang magang\n2. Pembahasan Kegiatan Magang\n3. Analisis dan Evaluasi',
-            ),
-            childCount: 2,
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Log Book Terbaru',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Icon(Icons.arrow_forward_ios, size: 14),
-                ),
-              ],
-            ),
-          ),
-        ),
-        newloogbook(),
-      ],
+            );
+          }
+          if (state is LoadStudentFailure) {
+            return Text(state.errorMessage);
+          }
+          return Container();
+        },
+      ),
     );
   }
 
-  SliverList newloogbook() {
+  SliverList _guidancesList(StudentHomeEntity student) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) => LogBookItemWidget(
+        (context, index) => GuidanceCard(
+          title: student.latest_guidances[index].title,
+          date: DateTime(2024, 1, 28 - index),
+          status: student.latest_guidances[index].status == 'approved'
+              ? GuidanceStatus.approved
+              : student.latest_guidances[index].status == 'in-progress'
+                  ? GuidanceStatus.inProgress
+                  : student.latest_guidances[index].status == 'rejected'
+                      ? GuidanceStatus.rejected
+                      : GuidanceStatus.updated,
+          description: student.latest_guidances[index].activity,
+        ),
+        childCount: student.latest_guidances.length,
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _header(StudentHomeEntity student) {
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            height: 160,
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(AppImages.homePattern),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'HELLO,',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  student.name,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            color: Colors.white,
+            child: NotificationWidget(
+              onClose: () {},
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  SliverList _logBooksList(StudentHomeEntity student) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => LogBookCard(
           item: LogBookItem(
-            week: 'Minggu ${index + 1}',
+            title: student.latest_log_books[index].title,
             date: DateTime(2024, 1, 21 + index * 7),
-            description:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+            description: student.latest_log_books[index].activity,
           ),
           onEdit: (updatedItem) {
             // Implement edit functionality
           },
         ),
-        childCount: 2,
+        childCount: student.latest_log_books.length,
       ),
     );
   }
@@ -219,94 +275,6 @@ class NotificationWidget extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class LogBookItem {
-  final String week;
-  final DateTime date;
-  String description;
-
-  LogBookItem({
-    required this.week,
-    required this.date,
-    required this.description,
-  });
-}
-
-class LogBookItemWidget extends StatelessWidget {
-  final LogBookItem item;
-  final Function(LogBookItem) onEdit;
-
-  const LogBookItemWidget({
-    Key? key,
-    required this.item,
-    required this.onEdit,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: AppColors.white,
-      child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          title: Text(item.week),
-          subtitle: Text(DateFormat('dd/MM/yyyy').format(item.date)),
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.description),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        String newDescription = item.description;
-        return AlertDialog(
-          title: const Text('Edit Log Book'),
-          content: TextField(
-            maxLines: 5,
-            decoration:
-                const InputDecoration(hintText: 'Enter new description'),
-            onChanged: (value) {
-              newDescription = value;
-            },
-            controller: TextEditingController(text: item.description),
-          ),
-          actions: [
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            ElevatedButton(
-              child: const Text('Save'),
-              onPressed: () {
-                onEdit(LogBookItem(
-                  week: item.week,
-                  date: item.date,
-                  description: newDescription,
-                ));
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

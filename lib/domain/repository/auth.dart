@@ -5,5 +5,6 @@ abstract class AuthRepostory {
 
   Future<Either> signin(SigninReqParams request);
   Future<bool> isLoggedIn();
+  Future<Either> logout();
   
 } 
