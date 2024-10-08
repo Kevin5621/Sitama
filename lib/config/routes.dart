@@ -17,7 +17,7 @@ import '../UI/pages/mahasiswa/logbook.dart';
 // import '../presentation/pages/dosen/home_page.dart' as dosen;
 // import '../presentation/pages/dosen/detail_mahasiswa_page.dart';
 // import '../presentation/pages/dosen/input_nilai_page.dart';
-// import '../presentation/pages/dosen/profile_page.dart' as dosen;
+import '../UI/pages/dosen/profiledosen.dart' as dosen;
 
 final sl = GetIt.instance;
 
@@ -71,8 +71,8 @@ class AppRoutes {
       //   return MaterialPageRoute(builder: (_) => DetailMahasiswaPage());
       // case dosenInputNilai:
       //   return MaterialPageRoute(builder: (_) => InputNilaiPage());
-      // case dosenProfile:
-      //   return MaterialPageRoute(builder: (_) => dosen.ProfilePage());
+      case dosenProfile:
+        return MaterialPageRoute(builder: (_) => const dosen.ProfileDosen());
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

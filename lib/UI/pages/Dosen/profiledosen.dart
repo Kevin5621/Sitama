@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sitama3/UI/bloc/event/reset_psw.dart';
 import 'package:sitama3/UI/pages/common/welcome.dart';
+import 'package:sitama3/config/assets/app_images.dart';
 
 class ProfileDosen extends StatelessWidget {
   const ProfileDosen({Key? key}) : super(key: key);
@@ -11,27 +12,30 @@ class ProfileDosen extends StatelessWidget {
       body: Column(
         children: [
           // Header with pattern background
-          Container(
+          SizedBox(
             height: 260, // Sesuaikan tinggi header sesuai kebutuhan
             child: Stack(
               children: [
-                // Pattern Background untuk header saja
-                Positioned.fill(
-                  child: Image.asset(
-                    'assets/home_pattern.png',
+                Container(
+                width: double.infinity,
+                height: 160,
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(AppImages.homePattern),
                     fit: BoxFit.cover,
                   ),
                 ),
                 // Header Content
-                SafeArea(
+                child: SafeArea(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
+                      const Padding(
+                        padding: EdgeInsets.all(16.0),
                         child: Row(
                           children: [
-                            const SizedBox(width: 32),
-                            const Expanded(
+                            SizedBox(width: 32),
+                            Expanded(
                               child: Text(
                                 'Profile',
                                 textAlign: TextAlign.center,
@@ -41,7 +45,7 @@ class ProfileDosen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 32),
+                            SizedBox(width: 32),
                           ],
                         ),
                       ),
@@ -73,7 +77,8 @@ class ProfileDosen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
+              ),
+              ]
             ),
           ),
           // Content
@@ -97,21 +102,21 @@ class ProfileDosen extends StatelessWidget {
                         ],
                       ),
                       padding: const EdgeInsets.all(16),
-                      child: Column(
+                      child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'About',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          const InfoRow(
+                          SizedBox(height: 16),
+                          InfoRow(
                               label: 'Name', value: 'Amran Yobioktabera'),
-                          const InfoRow(label: 'NIP', value: '33222112345'),
-                          const InfoRow(
+                          InfoRow(label: 'NIP', value: '33222112345'),
+                          InfoRow(
                             label: 'Email',
                             value: 'Yobioktabera@polnes.com',
                           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sitama3/UI/pages/Mahasiswa/home.dart';
-import 'package:sitama3/UI/pages/Dosen/home_dosen.dart';
+import 'package:sitama3/presentation/pages/Dosen/home_dosen.dart';
 import './config/theme/theme.dart';
 // import './presentation/pages/common/splash.dart';
 import './config/routes.dart';
