@@ -10,7 +10,7 @@ class LogbookItem {
     required this.weekNumber,
     required this.date,
     required this.description,
-    this.isExpanded = false,
+    this.isExpanded = false, required String title,
   });
 
   String get title => 'Logbook Week $weekNumber';
@@ -27,7 +27,7 @@ class LogbookItem {
       weekNumber: weekNumber ?? this.weekNumber,
       date: date ?? this.date,
       description: description ?? this.description,
-      isExpanded: isExpanded ?? this.isExpanded,
+      isExpanded: isExpanded ?? this.isExpanded, title: '',
     );
   }
 

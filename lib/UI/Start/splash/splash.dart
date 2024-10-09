@@ -1,0 +1,66 @@
+
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sitama3/common/bloc/auth/auth_state.dart';
+import 'package:sitama3/common/bloc/auth/auth_state_cubit.dart';
+import 'package:sitama3/core/config/assets/app_images.dart';
+import 'package:sitama3/ui/Dosen/home/pages/home_dosen.dart';
+import 'package:sitama3/ui/Mahasiswa/home/pages/home.dart';
+import 'package:sitama3/ui/Start/welcome/welcome.dart';
+
+class SplashPage extends StatefulWidget {
+  const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    redirect();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(AppImages.pattern), fit: BoxFit.cover)),
+        ),
+        Center(
+          child: Image.asset(AppImages.logo),
+        ),
+      ]),
+    );
+  }
+
+  Future<void> redirect() async {
+    await Future.delayed(const Duration(seconds: 2));
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => BlocProvider(
+          create: (context) => AuthStateCubit()..appStarted(),
+          child:
+              BlocBuilder<AuthStateCubit, AuthState>(builder: (context, state) {
+            if (state is AuthenticatedStudent) {
+              return HomePage();
+            }
+            if (state is AuthenticatedLecturer) {
+              return LecturerHomePage();
+            }
+            if (state is UnAuthenticated) {
+              return WelcomePages();
+            }
+            return Container();
+          }),
+        ),
+      ),
+    );
+  }
+}

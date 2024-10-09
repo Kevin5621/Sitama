@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sitama3/UI/pages/Mahasiswa/home.dart';
-import 'package:sitama3/presentation/pages/Dosen/home_dosen.dart';
-import './config/theme/theme.dart';
-// import './presentation/pages/common/splash.dart';
-import './config/routes.dart';
-
+import 'package:sitama3/core/config/theme/app_theme.dart';
+import 'package:sitama3/routes.dart';
+import 'package:sitama3/ui/Start/splash/splash.dart';
 
 void main() {
   setupServiceLocator();
@@ -12,15 +9,15 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: const HomePageD(),
+      debugShowCheckedModeBanner: false,
+      home: const SplashPage(),
     );
   }
 }

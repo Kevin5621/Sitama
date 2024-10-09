@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/signin_req_params.dart';
-import '../source/auth_api_service.dart';
-import '../source/auth_local_service.dart';
-import '../../domain/repository/auth.dart';
-import '../../config/routes.dart';
+import 'package:sitama3/data/models/signin_req_params.dart';
+import 'package:sitama3/data/source/auth_api_service.dart';
+import 'package:sitama3/data/source/auth_local_service.dart';
+import 'package:sitama3/domain/repository/auth.dart';
+import 'package:sitama3/routes.dart';
 
 class AuthRepostoryImpl extends AuthRepostory{
 
@@ -29,6 +29,12 @@ class AuthRepostoryImpl extends AuthRepostory{
   @override
   Future<bool> isLoggedIn() async {
     return await sl<AuthLocalService>().isLoggedIn();
+  }
+  
+  @override
+  Future<Either> logout() async {
+    Either resullt = await sl<AuthLocalService>().logout();
+    return resullt;
   }
   
 }
