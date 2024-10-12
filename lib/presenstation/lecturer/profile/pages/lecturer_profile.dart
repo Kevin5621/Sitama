@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/common/widgets/log_out_alert.dart';
+import 'package:sistem_magang/presenstation/lecturer/reset_password/pages/reset_password.dart';
+
+import '../widgets/setting_button.dart';
 
 class LecturerProfilePage extends StatelessWidget {
   const LecturerProfilePage({super.key});
@@ -16,7 +19,40 @@ class LecturerProfilePage extends StatelessWidget {
           SizedBox(height: 26),
           _about(),
           SizedBox(height: 100),
-          _logout(context),
+          _settingsList(context),
+        ],
+      ),
+    );
+  }
+
+  Padding _settingsList(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          SettingButton(
+            icon: Icons.lock_reset,
+            title: 'Reset Password',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ResetPasswordPage()),
+              );
+            },
+          ),
+          SettingButton(
+            icon: Icons.logout,
+            title: 'Log Out',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return LogOutAlert();
+                },
+              );
+            },
+          ),
         ],
       ),
     );
@@ -157,39 +193,6 @@ class LecturerProfilePage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _logout(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return LogOutAlert();
-            });
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                'Log Out',
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.navigate_next_outlined,
-              size: 18,
-              color: AppColors.gray,
-            )
-          ],
-        ),
       ),
     );
   }
