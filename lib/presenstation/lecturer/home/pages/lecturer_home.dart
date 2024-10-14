@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_magang/common/widgets/search_field.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
-import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_jurusan.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_tahun.dart';
 import 'package:sistem_magang/presenstation/lecturer/home/widgets/student_card.dart';
 import 'package:sistem_magang/presenstation/lecturer/profile/pages/lecturer_profile.dart';
 
@@ -63,7 +64,13 @@ class LecturerHomeContent extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 16),
-                _filterDropDown(),
+                Row(
+                children: [
+                    Expanded(child: FilterTahunWidget()),
+                    SizedBox(width: 16), 
+                    Expanded(child: FilterJurusanWidget()),
+                  ],
+                ),
                 SizedBox(height: 32),
                 StudentCard(
                   imageUrl: 'https://picsum.photos/200/300',
@@ -76,70 +83,6 @@ class LecturerHomeContent extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Row _filterDropDown() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.gray,
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: DropdownButton<String>(
-              value: '2024/2025',
-              isExpanded: true,
-              underline: SizedBox(),
-              onChanged: (String? newValue) {},
-              items: [
-                '2024/2025',
-                '2023/2024',
-                '2022/2023',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.gray,
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: DropdownButton<String>(
-              value: 'D3 - Informatika',
-              isExpanded: true,
-              underline: SizedBox(),
-              onChanged: (String? newValue) {},
-              items: [
-                'D3 - Informatika',
-                'D4 - Informatika',
-                'S1 - Informatika',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -166,6 +109,7 @@ class LecturerHomeContent extends StatelessWidget {
             ),
           ),
           Text(
+//TODO must change to API
             'AMRAN YOBIOKTABERA, M. KOM',
             style: TextStyle(
               fontSize: 20,
