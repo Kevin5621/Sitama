@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_magang/core/error/failure.dart';
-import 'package:sistem_magang/domain/usecases/get_student_details.dart';
+import 'package:sistem_magang/domain/usecases/get_student_bimbingan.dart';
 import 'package:sistem_magang/domain/usecases/get_student_logbook.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/bloc/detail_student_state.dart';
 
