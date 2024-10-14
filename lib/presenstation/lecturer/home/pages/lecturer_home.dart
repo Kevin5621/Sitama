@@ -75,8 +75,8 @@ class LecturerHomeContent extends StatelessWidget {
                 StudentCard(
                   imageUrl: 'https://picsum.photos/200/300',
                   name: 'Lucas Scott',
+                  jurusan: 'D3 - Informatika',
                   nim: '3.34.23.2.23',
-                  kelas: 'IK - 2C',
                 ),
               ],
             ),
