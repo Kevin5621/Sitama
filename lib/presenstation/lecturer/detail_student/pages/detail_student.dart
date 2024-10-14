@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/domain/usecases/update_scores_usecase.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/widgets/bimbingan_widgets.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/widgets/logbook_widgets.dart';
-import 'package:sistem_magang/presenstation/lecturer/input_score/pages/input_score.dart'; // Import InputScorePage
+import 'package:sistem_magang/presenstation/lecturer/input_score/pages/input_score.dart'; 
 
 class DetailStudentPage extends StatelessWidget {
   const DetailStudentPage({super.key});
@@ -127,7 +129,11 @@ class DetailStudentPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => InputScorePage()), // Navigate to InputScorePage
+                      MaterialPageRoute(
+                          builder: (context) => InputScorePage(
+                            updateScoresUseCase: GetIt.I<UpdateScoresUseCase>(), 
+                          ),
+                        ),
                     );
                   },
                 ),

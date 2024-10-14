@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/presenstation/lecturer/input_score/widgets/add_industry_button.dart';
+import 'package:sistem_magang/presenstation/lecturer/input_score/widgets/expandable_section.dart';
+import 'package:sistem_magang/presenstation/lecturer/input_score/widgets/industry_score_card.dart';
+import 'package:sistem_magang/domain/entities/industry_score.dart';
+import 'package:sistem_magang/domain/usecases/update_scores_usecase.dart';
 
 class InputScorePage extends StatefulWidget {
-  const InputScorePage({Key? key}) : super(key: key);
+  final UpdateScoresUseCase updateScoresUseCase;
+
+  const InputScorePage({Key? key, required this.updateScoresUseCase}) : super(key: key);
 
   @override
   _InputScorePageState createState() => _InputScorePageState();
 }
 
 class _InputScorePageState extends State<InputScorePage> {
-  final List<Map<String, dynamic>> _industryScores = [];
+  final List<IndustryScore> _industryScores = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +37,22 @@ class _InputScorePageState extends State<InputScorePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildExpandableSection('Proposal', [
-                'Tujuan Sasaran',
-                'Kelengkapan Proposal',
-                'Rata - rata',
-              ]),
+              ExpandableSection(
+                title: 'Proposal',
+                fields: ['Tujuan Sasaran', 'Kelengkapan Proposal', 'Rata - rata'],
+              ),
               const SizedBox(height: 16),
-              _buildExpandableSection('Laporan', [
-                'Sistematika Penulisan',
-                'Bahasa',
-                'Isi',
-              ]),
+              ExpandableSection(
+                title: 'Laporan',
+                fields: ['Sistematika Penulisan', 'Bahasa', 'Isi'],
+              ),
               const SizedBox(height: 16),
-              ..._industryScores.map((score) => _buildIndustryScoreCard(score)),
+              ..._industryScores.map((score) => IndustryScoreCard(
+                score: score,
+                onRemove: () => _removeIndustryScore(score),
+              )),
               const SizedBox(height: 16),
-              _buildAddIndustryButton(),
+              AddIndustryButton(onTap: _addIndustryScore),
               const SizedBox(height: 32.0),
               SizedBox(
                 width: double.infinity,
@@ -71,175 +78,33 @@ class _InputScorePageState extends State<InputScorePage> {
     );
   }
 
-  Widget _buildExpandableSection(String title, List<String> fields) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: Colors.grey[300]!, width: 1),
-      ),
-      child: ExpansionTile(
-        title: Text(title),
-        leading: Icon(_getIconForTitle(title)),
-        children: [
-          Divider(thickness: 1, height: 1),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: fields.map((field) => _buildInputField(field)).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInputField(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Text(label, style: TextStyle(fontSize: 16)),
-          ),
-          Expanded(
-            flex: 2,
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[300]!),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.primary),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildIndustryScoreCard(Map<String, dynamic> score) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: Colors.grey[300]!, width: 1),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: score['titleController'],
-                    decoration: InputDecoration(
-                      hintText: 'Judul Nilai Industri',
-                      border: InputBorder.none,
-                    ),
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _removeIndustryScore(score),
-                ),
-              ],
-            ),
-            Divider(thickness: 1, height: 1),
-            const SizedBox(height: 16),
-            _buildInputField('Tanggal Mulai'),
-            _buildInputField('Tanggal Selesai'),
-            _buildInputField('Nilai'),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAddIndustryButton() {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-        side: BorderSide(color: Colors.grey[300]!, width: 1),
-      ),
-      child: InkWell(
-        onTap: _addIndustryScore,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.add, color: AppColors.primary),
-              SizedBox(width: 8),
-              Text('Tambah Nilai Industri', style: TextStyle(color: AppColors.primary)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _addIndustryScore() {
     setState(() {
-      _industryScores.add({
-        'titleController': TextEditingController(text: 'Nilai Industri ${_industryScores.length + 1}'),
-        'startDate': TextEditingController(),
-        'endDate': TextEditingController(),
-        'score': TextEditingController(),
-      });
+      _industryScores.add(IndustryScore(
+        title: 'Nilai Industri ${_industryScores.length + 1}',
+        startDate: '',
+        endDate: '',
+        score: '',
+      ));
     });
   }
 
-  void _removeIndustryScore(Map<String, dynamic> score) {
+  void _removeIndustryScore(IndustryScore score) {
     setState(() {
       _industryScores.remove(score);
     });
   }
 
-  IconData _getIconForTitle(String title) {
-    switch (title) {
-      case 'Proposal':
-        return Icons.description;
-      case 'Laporan':
-        return Icons.insert_drive_file;
-      default:
-        return Icons.article;
+  void _onSubmitNilai() async {
+    try {
+      await widget.updateScoresUseCase.execute(_industryScores);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Scores updated successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update scores')),
+      );
     }
-  }
-
-  void _onSubmitNilai() {
-    // Implement submit logic 
-    print('Submitting nilai');
-  }
-
-  @override
-  void dispose() {
-    for (var score in _industryScores) {
-      score['titleController'].dispose();
-      score['startDate'].dispose();
-      score['endDate'].dispose();
-      score['score'].dispose();
-    }
-    super.dispose();
   }
 }
