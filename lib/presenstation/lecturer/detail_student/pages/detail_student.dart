@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/widgets/bimbingan_widgets.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/widgets/logbook_widgets.dart';
-// Import blocs dan models yang diperlukan
+import 'package:sistem_magang/presenstation/lecturer/input_score/pages/input_score.dart'; // Import InputScorePage
 
 class DetailStudentPage extends StatelessWidget {
   const DetailStudentPage({super.key});
@@ -57,7 +57,7 @@ class DetailStudentPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: Column(
               children: [
-                _buildInfoBoxes(),
+                _buildInfoBoxes(context), // Pass context to _buildInfoBoxes
                 _buildTabSection(),
               ],
             ),
@@ -67,30 +67,38 @@ class DetailStudentPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoBoxes() {
+  Widget _buildInfoBoxes(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          _buildInfoBox('Industri', [
-            'Industri 1',
-            'Nama: Pertamina',
-            'Tanggal Mulai: 11 Agustus 2024',
-            'Tanggal Selesai: 12 Agustus 2025',
-          ]),
+          _buildInfoBox(
+            'Industri',
+            [
+              'Industri 1',
+              'Nama: Pertamina',
+              'Tanggal Mulai: 11 Agustus 2024',
+              'Tanggal Selesai: 12 Agustus 2025',
+            ],
+          ),
           const SizedBox(height: 16),
-          _buildInfoBox('Nilai', [
-            'Proposal: -',
-            'Laporan: -',
-            'Nilai Industri: -',
-            'Rata - rata: -',
-          ], showAddButton: true),
+          _buildInfoBox(
+            'Nilai',
+            [
+              'Proposal: -',
+              'Laporan: -',
+              'Nilai Industri: -',
+              'Rata - rata: -',
+            ],
+            showAddButton: true,
+            context: context, // Pass context here
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoBox(String title, List<String> content, {bool showAddButton = false}) {
+  Widget _buildInfoBox(String title, List<String> content, {bool showAddButton = false, BuildContext? context}) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
@@ -113,11 +121,14 @@ class DetailStudentPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-              if (showAddButton)
+              if (showAddButton && context != null)
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
-                    // Navigate to input grade page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InputScorePage()), // Navigate to InputScorePage
+                    );
                   },
                 ),
             ],
