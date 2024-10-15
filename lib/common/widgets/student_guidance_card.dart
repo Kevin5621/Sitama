@@ -3,21 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/presenstation/student/guidance/widgets/delete_guidance.dart';
+import 'package:sistem_magang/presenstation/student/guidance/widgets/edit_guidance.dart';
 
 enum GuidanceStatus { approved, rejected, inProgress, updated }
 
 class GuidanceCard extends StatelessWidget {
+  final int id;
   final String title;
   final DateTime date;
   final GuidanceStatus status;
   final String description;
+  final int curentPage;
 
   const GuidanceCard({
     Key? key,
+    required this.id,
     required this.title,
     required this.date,
     required this.status,
     required this.description,
+    required this.curentPage,
   }) : super(key: key);
 
   @override
@@ -38,13 +44,27 @@ class GuidanceCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(description, textAlign: TextAlign.left),
                   SizedBox(height: 10),
                   Row(
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return EditGuidance(
+                                id: id,
+                                title: title,
+                                date: date,
+                                description: description,
+                                curentPage: curentPage,
+                              );
+                            },
+                          );
+                        },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -66,7 +86,18 @@ class GuidanceCard extends StatelessWidget {
                       ),
                       SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return DeleteGuidance(
+                                id: id,
+                                title: title,
+                                curentPage: curentPage,
+                              );
+                            },
+                          );
+                        },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -38,6 +38,7 @@ extension StudentHomeXModel on StudentHomeModel {
       name: name,
       latest_guidances: latest_guidances
           .map<GuidanceEntity>((data) => GuidanceEntity(
+                id: data.id,
                 title: data.title,
                 activity: data.activity,
                 date: data.date,

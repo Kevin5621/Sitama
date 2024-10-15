@@ -5,7 +5,7 @@ import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/common/widgets/log_out_alert.dart';
 import 'package:sistem_magang/presenstation/lecturer/reset_password/pages/reset_password.dart';
 
-import '../widgets/setting_button.dart';
+import '../../../../common/widgets/setting_button.dart';
 
 class LecturerProfilePage extends StatelessWidget {
   const LecturerProfilePage({super.key});
@@ -13,14 +13,16 @@ class LecturerProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _header(),
-          SizedBox(height: 26),
-          _about(),
-          SizedBox(height: 100),
-          _settingsList(context),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _header(),
+            SizedBox(height: 26),
+            _about(),
+            SizedBox(height: 100),
+            _settingsList(context),
+          ],
+        ),
       ),
     );
   }

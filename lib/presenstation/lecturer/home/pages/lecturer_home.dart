@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sistem_magang/common/widgets/search_field.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
-import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/domain/entities/lecturer_home_entity.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/bloc/lecturer_display_cubit.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/bloc/lecturer_display_state.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_jurusan.dart';
+import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_tahun.dart';
 import 'package:sistem_magang/presenstation/lecturer/home/widgets/student_card.dart';
 import 'package:sistem_magang/presenstation/lecturer/profile/pages/lecturer_profile.dart';
 
@@ -41,109 +47,90 @@ class _LecturerHomePageState extends State<LecturerHomePage> {
   }
 }
 
-class LecturerHomeContent extends StatelessWidget {
+class LecturerHomeContent extends StatefulWidget {
   const LecturerHomeContent({super.key});
+
+  @override
+  State<LecturerHomeContent> createState() => _LecturerHomeContentState();
+}
+
+class _LecturerHomeContentState extends State<LecturerHomeContent> {
+  String _search = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          _header(),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Mahasiswa Bimbingan',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+      body: BlocProvider(
+        create: (context) => LecturerDisplayCubit()..displayLecturer(),
+        child: BlocBuilder<LecturerDisplayCubit, LecturerDisplayState>(
+          builder: (context, state) {
+            if (state is LecturerLoading) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (state is LecturerLoaded) {
+              LecturerHomeEntity data = state.lecturerHomeEntity;
+              List<LecturerStudentsEntity> students = data.students.where((student) {
+                var search = student.name.toLowerCase().contains(_search.toLowerCase()) || student.major.toLowerCase().contains(_search.toLowerCase());
+                return search;
+              }).toList();
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _header(data.name),
+                    Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Mahasiswa Bimbingan',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            children: [
+                              Expanded(child: FilterJurusan()),
+                              SizedBox(width: 16),
+                              Expanded(child: FilterTahun()),
+                            ],
+                          ),
+                          ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: students.length,
+                              separatorBuilder: (context, index) => SizedBox(
+                                    width: 14,
+                                  ),
+                              itemBuilder: (context, index) {
+                                return StudentCard(
+                                  id: students[index].id,
+                                  imageUrl: 'https://picsum.photos/200/300',
+                                  name: students[index].name,
+                                  jurusan: students[index].major,
+                                  nim: students[index].username,
+                                );
+                              }),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 16),
-                _filterDropDown(),
-                SizedBox(height: 32),
-                StudentCard(
-                  imageUrl: 'https://picsum.photos/200/300',
-                  name: 'Lucas Scott',
-                  nim: '3.34.23.2.23',
-                  kelas: 'IK - 2C',
-                ),
-              ],
-            ),
-          ),
-        ],
+              );
+            }
+            if (state is LoadLecturerFailure) {
+              return Text(state.errorMessage);
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
 
-  Row _filterDropDown() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.gray,
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: DropdownButton<String>(
-              value: '2024/2025',
-              isExpanded: true,
-              underline: SizedBox(),
-              onChanged: (String? newValue) {},
-              items: [
-                '2024/2025',
-                '2023/2024',
-                '2022/2023',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-        SizedBox(width: 20),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.gray,
-                width: 1.0,
-              ),
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 12.0),
-            child: DropdownButton<String>(
-              value: 'D3 - Informatika',
-              isExpanded: true,
-              underline: SizedBox(),
-              onChanged: (String? newValue) {},
-              items: [
-                'D3 - Informatika',
-                'D4 - Informatika',
-                'S1 - Informatika',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _header() {
+  Widget _header(String name) {
     return Container(
       width: double.infinity,
       height: 220,
@@ -166,14 +153,21 @@ class LecturerHomeContent extends StatelessWidget {
             ),
           ),
           Text(
-            'AMRAN YOBIOKTABERA, M. KOM',
+            name,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 26),
-          SearchField(onChanged: (value) {}, onFilterPressed: () {}),
+          SearchField(
+            onChanged: (value) {
+              setState(() {
+                _search = value;
+              });
+            },
+            onFilterPressed: () {},
+          ),
         ],
       ),
     );

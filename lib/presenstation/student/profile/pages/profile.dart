@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sistem_magang/common/widgets/setting_button.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/common/widgets/log_out_alert.dart';
+import 'package:sistem_magang/presenstation/lecturer/reset_password/pages/reset_password.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -18,42 +20,43 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 22),
             _industry(),
             SizedBox(height: 120),
-            _logout(context),
+
+            _settingsList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _logout(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return LogOutAlert();
-            });
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                'Log Out',
-                style: TextStyle(
-                  fontSize: 14,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.navigate_next_outlined,
-              size: 18,
-              color: AppColors.gray,
-            )
-          ],
-        ),
+  Padding _settingsList(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          SettingButton(
+            icon: Icons.lock_reset,
+            title: 'Reset Password',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ResetPasswordPage()),
+              );
+            },
+          ),
+          SettingButton(
+            icon: Icons.logout,
+            title: 'Log Out',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return LogOutAlert();
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }

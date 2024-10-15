@@ -67,6 +67,7 @@ class _GuidancePageState extends State<GuidancePage> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => GuidanceCard(
+                        id: guidances[index].id,
                         title: guidances[index].title,
                         date: DateTime(2024, 1, 28 - index),
                         status: guidances[index].status == 'approved'
@@ -77,6 +78,7 @@ class _GuidancePageState extends State<GuidancePage> {
                                     ? GuidanceStatus.rejected
                                     : GuidanceStatus.updated,
                         description: guidances[index].activity,
+                        curentPage: 1,
                       ),
                       childCount: guidances.length,
                     ),
@@ -111,7 +113,7 @@ class _GuidancePageState extends State<GuidancePage> {
             showDialog(
               context: context,
               builder: (context) {
-                return addGuidance();
+                return AddGuidance();
               },
             );
           },

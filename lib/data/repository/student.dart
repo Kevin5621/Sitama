@@ -33,7 +33,7 @@ class StudentRepositoryImpl extends StudentRepository {
       },
     );
   }
-  
+
   @override
   Future<Either> getGuidances() async {
     Either result = await sl<StudentApiService>().getGuidances();
@@ -57,6 +57,45 @@ class StudentRepositoryImpl extends StudentRepository {
         } catch (e) {
           return Left("Parsing error: $e");
         }
+      },
+    );
+  }
+
+  @override
+  Future<Either> addGuidances(AddGuidanceReqParams request) async {
+    Either result = await sl<StudentApiService>().addGuidances(request);
+    return result.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        return Right(data);
+      },
+    );
+  }
+  
+  @override
+  Future<Either> editGuidances(EditGuidanceReqParams request) async {
+    Either result = await sl<StudentApiService>().editGuidances(request);
+    return result.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        return Right(data);
+      },
+    );
+  }
+  
+  @override
+  Future<Either> deleteGuidances(int id) async {
+    Either result = await sl<StudentApiService>().deleteGuidances(id);
+    return result.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        return Right(data);
       },
     );
   }

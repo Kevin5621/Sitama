@@ -6,14 +6,16 @@ class ListGuidanceEntity {
 
 
 class GuidanceEntity {
+  final int id;
   final String title;
   final String activity;
-  final String date;
+  final DateTime date;
   final String lecturer_note;
   final String name_file;
   final String status;
 
   GuidanceEntity({
+    required this.id,
     required this.title,
     required this.activity,
     required this.date,

@@ -1,150 +1,164 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'guidace_item.dart';
+import 'package:sistem_magang/common/bloc/button/button_state.dart';
+import 'package:sistem_magang/common/bloc/button/button_state_cubit.dart';
+import 'package:sistem_magang/common/widgets/basic_app_button.dart';
+import 'package:sistem_magang/data/models/guidance.dart';
+import 'package:sistem_magang/domain/usecases/edit_guidance_student.dart';
+import 'package:sistem_magang/presenstation/student/home/pages/home.dart';
+import 'package:sistem_magang/service_locator.dart';
 
-class EditBimbinganDialog extends StatefulWidget {
-  final BimbinganItem item;
-  final Function(BimbinganItem) onSave;
+class EditGuidance extends StatefulWidget {
+  final int id;
+  final String title;
+  final DateTime date;
+  final String description;
+  final int curentPage;
 
-  const EditBimbinganDialog({
-    Key? key,
-    required this.item,
-    required this.onSave,
-  }) : super(key: key);
+  const EditGuidance(
+      {super.key,
+      required this.id,
+      required this.curentPage,
+      required this.title,
+      required this.date,
+      required this.description});
 
   @override
-  _EditBimbinganDialogState createState() => _EditBimbinganDialogState();
+  State<EditGuidance> createState() => _EditGuidanceState();
 }
 
-class _EditBimbinganDialogState extends State<EditBimbinganDialog> {
-  final _formKey = GlobalKey<FormState>();
-  late String _title;
+class _EditGuidanceState extends State<EditGuidance> {
   late DateTime _date;
-  late String _description;
-  String? _fileUrl;
-  String? _fileSize;
+
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _activity = TextEditingController();
 
   @override
   void initState() {
+    _title.text = widget.title;
+    _activity.text = widget.description;
+    _date = widget.date;
     super.initState();
-    _title = widget.item.title;
-    _date = widget.item.date;
-    _description = widget.item.description;
-    _fileUrl = widget.item.fileUrl;
-    _fileSize = widget.item.fileSize;
+  }
+
+  @override
+  void dispose() {
+    _title.dispose();
+    _activity.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Edit Bimbingan'),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                initialValue: _title,
-                decoration: const InputDecoration(labelText: 'Judul'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _title = value!,
-              ),
-              InkWell(
-                onTap: () async {
-                  final DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: _date,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  );
-                  if (picked != null && picked != _date) {
-                    setState(() {
-                      _date = picked;
-                    });
-                  }
-                },
-                child: InputDecorator(
-                  decoration: const InputDecoration(
-                    labelText: 'Tanggal',
-                    suffixIcon: Icon(Icons.calendar_today),
-                  ),
-                  child: Text(DateFormat('dd/MM/yyyy').format(_date)),
+    return BlocProvider(
+      create: (context) => ButtonStateCubit(),
+      child: BlocListener<ButtonStateCubit, ButtonState>(
+        listener: (context, state) async {
+          if (state is ButtonSuccessState) {
+            var snackBar =
+                SnackBar(content: Text('Berhasil Mengedit Bimbingan'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(
+                  currentIndex: widget.curentPage,
                 ),
               ),
-              TextFormField(
-                initialValue: _description,
-                decoration:
-                    const InputDecoration(labelText: 'Kegiatan bimbingan anda'),
-                maxLines: 3,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _description = value!,
-              ),
-              if (_fileUrl != null)
-                ListTile(
-                  leading: const Icon(Icons.file_present),
-                  title: Text(_fileUrl!),
-                  subtitle: Text(_fileSize ?? ''),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      setState(() {
-                        _fileUrl = null;
-                        _fileSize = null;
-                      });
+              (Route<dynamic> route) => false,
+            );
+          }
+
+          if (state is ButtonFailurState) {
+            var snackBar = SnackBar(content: Text(state.errorMessage));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
+        child: AlertDialog(
+          title: Text('Edit Bimbingan'),
+          content: Form(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _title,
+                    decoration: InputDecoration(
+                      labelText: 'Judul',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  InkWell(
+                    onTap: () async {
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: _date,
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime.now(),
+                      );
+                      if (picked != null && picked != _date) {
+                        setState(() {
+                          _date = picked;
+                        });
+                      }
                     },
+                    child: InputDecorator(
+                      decoration: const InputDecoration(
+                        suffixIcon: Icon(Icons.calendar_month),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                        ),
+                      ),
+                      child: Text(DateFormat('dd/MM/yyyy').format(_date)),
+                    ),
                   ),
-                ),
-              const SizedBox(height: 10),
-              OutlinedButton.icon(
-                icon: const Icon(Icons.upload_file),
-                label: const Text('Upload File'),
-                onPressed: () {
-                  // TODO: Implement file upload
-                  // For now, we'll just set dummy values
-                  setState(() {
-                    _fileUrl = 'dummy_file.pdf';
-                    _fileSize = '1 MB';
-                  });
-                },
+                  SizedBox(height: 20),
+                  TextFormField(
+                    controller: _activity,
+                    decoration: InputDecoration(
+                      labelText: 'Aktivitas',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
+          actions: [
+            Builder(builder: (context) {
+              return BasicAppButton(
+                onPressed: () {
+                  context.read<ButtonStateCubit>().excute(
+                        usecase: sl<EditGuidanceUseCase>(),
+                        params: EditGuidanceReqParams(
+                          id: widget.id,
+                          title: _title.text,
+                          activity: _activity.text,
+                          date: _date,
+                        ),
+                      );
+                },
+                title: 'Edit',
+                height: false,
+              );
+            }),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(
-          child: const Text('Cancel'),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        ElevatedButton(
-          child: const Text('Simpan'),
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              _formKey.currentState!.save();
-              widget.onSave(BimbinganItem(
-                title: _title,
-                date: _date,
-                status: widget.item.status,
-                description: _description,
-                fileUrl: _fileUrl,
-                fileSize: _fileSize,
-              ));
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-      ],
     );
   }
 }

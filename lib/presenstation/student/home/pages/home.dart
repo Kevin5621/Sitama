@@ -16,23 +16,31 @@ import 'package:sistem_magang/presenstation/student/profile/pages/profile.dart';
 // import 'm_settings_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final int currentIndex;
+
+  const HomePage({Key? key, this.currentIndex = 0}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  late int _currentIndex;
 
-  final List<Widget> _pages = [
-    const GuidancePage(),
-    const LogBookPage(),
-    const ProfilePage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.currentIndex;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> _pages = [
+      GuidancePage(),
+      const LogBookPage(),
+      const ProfilePage(),
+    ];
+
     return Scaffold(
       body:
           _currentIndex == 0 ? _buildHomeContent() : _pages[_currentIndex - 1],
@@ -151,8 +159,9 @@ class _HomeContent extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => GuidanceCard(
+          id: student.latest_guidances[index].id,
           title: student.latest_guidances[index].title,
-          date: DateTime(2024, 1, 28 - index),
+          date: student.latest_guidances[index].date,
           status: student.latest_guidances[index].status == 'approved'
               ? GuidanceStatus.approved
               : student.latest_guidances[index].status == 'in-progress'
@@ -161,6 +170,7 @@ class _HomeContent extends StatelessWidget {
                       ? GuidanceStatus.rejected
                       : GuidanceStatus.updated,
           description: student.latest_guidances[index].activity,
+          curentPage: 0,
         ),
         childCount: student.latest_guidances.length,
       ),

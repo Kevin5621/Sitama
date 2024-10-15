@@ -3,17 +3,20 @@ import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/presenstation/lecturer/detail_student/pages/detail_student.dart';
 
 class StudentCard extends StatelessWidget {
+  final int id;
+
   final String imageUrl;
   final String name;
+  final String jurusan;
   final String nim;
-  final String kelas;
 
   const StudentCard({
     Key? key,
     required this.imageUrl,
     required this.name,
+    required this.jurusan,
     required this.nim,
-    required this.kelas,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -25,7 +28,7 @@ class StudentCard extends StatelessWidget {
       },
       child: Card(
         elevation: 1,
-        color: AppColors.background,
+        color: AppColors.white,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Row(
@@ -42,36 +45,39 @@ class StudentCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        nim,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF71727A),
+                    SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          jurusan,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF71727A),
+                          ),
                         ),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        kelas,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF71727A),
+                        Text(
+                          nim,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF71727A),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
