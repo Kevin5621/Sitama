@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:sistem_magang/common/widgets/student_guidance_card.dart';
 import 'package:sistem_magang/common/widgets/student_log_book_card.dart';
 import 'package:sistem_magang/core/config/assets/app_images.dart';
