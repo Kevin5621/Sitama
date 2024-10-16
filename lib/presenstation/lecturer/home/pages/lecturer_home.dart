@@ -22,8 +22,8 @@ class LecturerHomePage extends StatefulWidget {
 class _LecturerHomePageState extends State<LecturerHomePage> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
-    LecturerHomeContent(),
-    LecturerProfilePage(),
+    const LecturerHomeContent(),
+    const LecturerProfilePage(),
   ];
 
   @override
@@ -65,13 +65,17 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
         child: BlocBuilder<LecturerDisplayCubit, LecturerDisplayState>(
           builder: (context, state) {
             if (state is LecturerLoading) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (state is LecturerLoaded) {
               LecturerHomeEntity data = state.lecturerHomeEntity;
-              List<LecturerStudentsEntity> students = data.students.where((student) {
-                var search = student.name.toLowerCase().contains(_search.toLowerCase()) || student.major.toLowerCase().contains(_search.toLowerCase());
+              List<LecturerStudentsEntity> students =
+                  data.students.where((student) {
+                var search = student.name
+                        .toLowerCase()
+                        .contains(_search.toLowerCase()) ||
+                    student.major.toLowerCase().contains(_search.toLowerCase());
                 return search;
               }).toList();
               return SingleChildScrollView(
@@ -79,19 +83,19 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
                   children: [
                     _header(data.name),
                     Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Mahasiswa Bimbingan',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 16),
-                          Row(
+                          const SizedBox(height: 16),
+                          const Row(
                             children: [
                               Expanded(child: FilterJurusan()),
                               SizedBox(width: 16),
@@ -101,7 +105,8 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
                           ListView.separated(
                               shrinkWrap: true,
                               itemCount: students.length,
-                              separatorBuilder: (context, index) => SizedBox(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
                                     width: 14,
                                   ),
                               itemBuilder: (context, index) {
@@ -145,7 +150,7 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'HELLO,',
             style: TextStyle(
               fontSize: 12,
@@ -154,12 +159,12 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
           ),
           Text(
             name,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 26),
+          const SizedBox(height: 26),
           SearchField(
             onChanged: (value) {
               setState(() {

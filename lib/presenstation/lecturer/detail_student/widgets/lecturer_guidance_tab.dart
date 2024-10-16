@@ -71,7 +71,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton.icon(
-                        icon: Icon(Icons.done),
+                        icon: const Icon(Icons.done),
                         label: const Text(
                           'Confitm',
                           style: TextStyle(color: AppColors.white),
@@ -82,7 +82,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                         onPressed: () => _showConfirmationDialog(0),
                       ),
                       ElevatedButton.icon(
-                        icon: Icon(Icons.cancel),
+                        icon: const Icon(Icons.cancel),
                         label: const Text(
                           'Cancel',
                           style: TextStyle(color: AppColors.white),
@@ -134,7 +134,6 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
               },
             ),
             ElevatedButton(
-              child: const Text('Ya'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
               ),
@@ -145,6 +144,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                 Navigator.of(context).pop();
                 // Tambahkan logika untuk menyimpan revisi jika diperlukan
               },
+              child: const Text('Ya'),
             ),
           ],
         );

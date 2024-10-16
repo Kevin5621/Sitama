@@ -11,20 +11,20 @@ class StudentCard extends StatelessWidget {
   final String nim;
 
   const StudentCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.name,
     required this.jurusan,
     required this.nim,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailStudentPage()));
+            MaterialPageRoute(builder: (context) => const DetailStudentPage()));
       },
       child: Card(
         elevation: 1,
@@ -51,25 +51,25 @@ class StudentCard extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           jurusan,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF71727A),
                           ),
                         ),
                         Text(
                           nim,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF71727A),
                           ),

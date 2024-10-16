@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 
 class FilterTahun extends StatefulWidget {
-  const FilterTahun({Key? key}) : super(key: key);
+  const FilterTahun({super.key});
 
   @override
   State<FilterTahun> createState() => _FilterTahunState();
@@ -32,7 +32,7 @@ class _FilterTahunState extends State<FilterTahun> {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: Text(
+        hint: const Text(
           'Tahun',
           style: TextStyle(
             fontSize: 14,
