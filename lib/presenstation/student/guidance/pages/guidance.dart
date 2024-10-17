@@ -107,6 +107,7 @@ class _GuidancePageState extends State<GuidancePage> {
         ),
       ),
       centerTitle: true,
+      automaticallyImplyLeading: false,
       actions: [
         IconButton(
           onPressed: () {

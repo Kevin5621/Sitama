@@ -8,4 +8,5 @@ abstract class ScoreRepository {
 
 abstract class LecturerRepository {
   Future<Either> getLecturerHome();
+  Future<Either> getDetailStudent(int id);
 }
