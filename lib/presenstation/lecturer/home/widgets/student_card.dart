@@ -24,7 +24,7 @@ class StudentCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DetailStudentPage()));
+            MaterialPageRoute(builder: (context) => DetailStudentPage(id: id,)));
       },
       child: Card(
         elevation: 1,
