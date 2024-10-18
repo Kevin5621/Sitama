@@ -4,7 +4,7 @@ import 'package:sistem_magang/core/config/themes/app_color.dart';
 class AddIndustryButton extends StatelessWidget {
   final VoidCallback onTap;
 
-  const AddIndustryButton({Key? key, required this.onTap}) : super(key: key);
+  const AddIndustryButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class AddIndustryButton extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

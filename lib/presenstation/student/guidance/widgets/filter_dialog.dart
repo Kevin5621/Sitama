@@ -6,10 +6,10 @@ class FilterDialog extends StatelessWidget {
   final ValueChanged<BimbinganStatus?> onFilterChanged;
 
   const FilterDialog({
-    Key? key,
+    super.key,
     required this.currentFilter,
     required this.onFilterChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class FilterDialog extends StatelessWidget {
                 },
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

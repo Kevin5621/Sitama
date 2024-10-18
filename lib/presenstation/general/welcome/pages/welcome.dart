@@ -13,7 +13,7 @@ class WelcomePages extends StatelessWidget {
     return Scaffold(
       body: Stack(children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
             image: AssetImage(AppImages.pattern),
             fit: BoxFit.cover,
@@ -25,24 +25,24 @@ class WelcomePages extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(AppImages.logo),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'SITAMA',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 24),
-              Text(
+              const SizedBox(height: 24),
+              const Text(
                 'Selamat Datang di SITAMA',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
+              const SizedBox(height: 8),
+              const Text(
                 'Bantu kegiatan magang dan bimbingan jadi lebih mudah!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -51,16 +51,16 @@ class WelcomePages extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 70),
+              const SizedBox(height: 70),
               _loginButton(context),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Or continue with',
                 style: TextStyle(
                   color: AppColors.gray,
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               _signInWithGoogleButton(),
             ],
           ),
@@ -74,7 +74,8 @@ class WelcomePages extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+          MaterialPageRoute(
+              builder: (BuildContext context) => const LoginPage()),
         );
       },
       style: ElevatedButton.styleFrom(
@@ -82,7 +83,7 @@ class WelcomePages extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(55),
         ),
-        minimumSize: Size.fromHeight(50),
+        minimumSize: const Size.fromHeight(50),
       ),
       child: const Text(
         'Login',
@@ -110,8 +111,8 @@ class WelcomePages extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(AppVectors.google),
-          SizedBox(width: 10),
-          Text(
+          const SizedBox(width: 10),
+          const Text(
             'Lanjut Dengan Google',
             style: TextStyle(
               color: AppColors.gray,
