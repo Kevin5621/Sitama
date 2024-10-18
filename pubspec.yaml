@@ -22,6 +22,7 @@ dependencies:
     logger:
     shared_preferences:
     dropdown_button2:
+    equatable:
 
 dev_dependencies:
     flutter_test:
