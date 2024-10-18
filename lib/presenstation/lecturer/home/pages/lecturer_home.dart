@@ -12,16 +12,54 @@ import 'package:sistem_magang/presenstation/lecturer/home/bloc/selection_state.d
 import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_jurusan.dart';
 import 'package:sistem_magang/presenstation/lecturer/home/widgets/filter_tahun.dart';
 import 'package:sistem_magang/presenstation/lecturer/home/widgets/student_card.dart';
+import 'package:sistem_magang/presenstation/lecturer/profile/pages/lecturer_profile.dart';
 
 class LecturerHomePage extends StatefulWidget {
   const LecturerHomePage({super.key});
 
   @override
-  State<LecturerHomePage> createState() => _LecturerHomeContentState();
+  State<LecturerHomePage> createState() => _LecturerHomePageState();
 }
 
-class _LecturerHomeContentState extends State<LecturerHomePage> {
+class _LecturerHomePageState extends State<LecturerHomePage> {
+  int _currentIndex = 0;
+  final List<Widget> _pages = [
+    LecturerHomeContent(),
+    LecturerProfilePage(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
+    );
+  }
+}
+
+class LecturerHomeContent extends StatefulWidget {
+  const LecturerHomeContent({super.key});
+
+  @override
+  _LecturerHomeContentState createState() => _LecturerHomeContentState();
+}
+
+class _LecturerHomeContentState extends State<LecturerHomeContent> {
   String _search = '';
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +113,8 @@ class _LecturerHomeContentState extends State<LecturerHomePage> {
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
                                     itemCount: students.length,
-                                    separatorBuilder: (context, index) => const SizedBox(height: 14),
+                                    separatorBuilder: (context, index) => 
+                                        const SizedBox(height: 14),
                                     itemBuilder: (context, index) {
                                       return StudentCard(
                                         id: students[index].id,
@@ -83,18 +122,32 @@ class _LecturerHomeContentState extends State<LecturerHomePage> {
                                         name: students[index].name,
                                         jurusan: students[index].major,
                                         nim: students[index].username,
-                                        isSelected: selectionState.selectedIds.contains(students[index].id),
+                                        isSelected: selectionState.selectedIds
+                                            .contains(students[index].id),
                                         onTap: () {
                                           if (selectionState.isSelectionMode) {
-                                            context.read<SelectionBloc>().add(ToggleItemSelection(students[index].id));
+                                            context
+                                                .read<SelectionBloc>()
+                                                .add(ToggleItemSelection(students[index].id));
                                           } else {
-                                            Navigator.push(context, MaterialPageRoute(builder: (context) => const DetailStudentPage()));
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => DetailStudentPage(
+                                                  id: students[index].id,
+                                                ),
+                                              ),
+                                            );
                                           }
                                         },
                                         onLongPress: () {
                                           if (!selectionState.isSelectionMode) {
-                                            context.read<SelectionBloc>().add(ToggleSelectionMode());
-                                            context.read<SelectionBloc>().add(ToggleItemSelection(students[index].id));
+                                            context
+                                                .read<SelectionBloc>()
+                                                .add(ToggleSelectionMode());
+                                            context
+                                                .read<SelectionBloc>()
+                                                .add(ToggleItemSelection(students[index].id));
                                           }
                                         },
                                       );
@@ -106,7 +159,7 @@ class _LecturerHomeContentState extends State<LecturerHomePage> {
                           ],
                         ),
                       ),
-                      if (selectionState.isSelectionMode)
+                      if (selectionState.isSelectionMode && selectionState.selectedIds.isNotEmpty)
                         Positioned(
                           bottom: 16,
                           right: 16,

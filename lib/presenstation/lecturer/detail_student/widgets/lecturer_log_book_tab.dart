@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/domain/entities/student_home_entity.dart';
 
@@ -24,7 +23,7 @@ class LecturerLogBookTab extends StatelessWidget {
                   'Date: ${logBooks[index].date}'),
               children: [
                 Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Text(
                       '${logBooks[index].activity}'),
                 ),

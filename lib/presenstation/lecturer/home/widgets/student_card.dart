@@ -43,7 +43,7 @@ class StudentCard extends StatelessWidget {
                       : AppColors.white,
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.grey.shade300,
+                    color: isSelected ? AppColors.info : AppColors.gray,
                     width: isSelected ? 2 : 1,
                   ),
                   image: DecorationImage(
@@ -90,7 +90,7 @@ class StudentCard extends StatelessWidget {
               if (isSelected)
                 const Padding(
                   padding: EdgeInsets.only(left: 12),
-                  child: Icon(Icons.check_circle, color: Colors.blue),
+                  child: Icon(Icons.check_circle, color: AppColors.info),
                 ),
             ],
           ),
