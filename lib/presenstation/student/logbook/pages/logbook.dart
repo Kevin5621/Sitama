@@ -48,6 +48,7 @@ class LogBookPage extends StatelessWidget {
         ),
       ),
       centerTitle: true,
+      automaticallyImplyLeading: false,
       actions: [
         IconButton(
           onPressed: () {},

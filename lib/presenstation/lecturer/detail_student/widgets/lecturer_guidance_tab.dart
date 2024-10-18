@@ -1,72 +1,82 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/domain/entities/guidance_entity.dart';
 
 class LecturerGuidanceTab extends StatelessWidget {
-  const LecturerGuidanceTab({super.key});
+  final List<GuidanceEntity> guidances;
+
+  const LecturerGuidanceTab({super.key, required this.guidances});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 4,
+      itemCount: guidances.length,
       itemBuilder: (context, index) {
-        return LecturerGuidanceCard(type: index % 4);
+        return LecturerGuidanceCard(
+          guidance: guidances[index],
+        );
       },
     );
   }
 }
 
-class LecturerGuidanceCard extends StatefulWidget {
-  final int type;
+enum LecturerGuidanceStatus { approved, rejected, inProgress, updated }
 
-  const LecturerGuidanceCard({super.key, required this.type});
+class LecturerGuidanceCard extends StatefulWidget {
+  final GuidanceEntity guidance; // Use GuidanceEntity directly
+
+  const LecturerGuidanceCard({
+    Key? key,
+    required this.guidance,
+  }) : super(key: key);
 
   @override
   _LecturerGuidanceCardState createState() => _LecturerGuidanceCardState();
 }
 
 class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
-  late int currentType;
-  String revisionText = '';
+  late LecturerGuidanceStatus currentStatus;
 
   @override
   void initState() {
     super.initState();
-    currentType = widget.type;
+    currentStatus = widget.guidance.status == 'approved'
+        ? LecturerGuidanceStatus.approved
+        : widget.guidance.status == 'in-progress'
+            ? LecturerGuidanceStatus.inProgress
+            : widget.guidance.status == 'rejected'
+                ? LecturerGuidanceStatus.rejected
+                : LecturerGuidanceStatus
+                    .updated; // Set status from GuidanceEntity
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(8),
-      color: currentType == 3 ? AppColors.danger500 : AppColors.white,
+      color: currentStatus == LecturerGuidanceStatus.rejected
+          ? AppColors.danger500
+          : AppColors.white,
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
-          leading: _buildLeadingIcon(),
-          title: Text('Bimbingan ${widget.type + 1}'),
-          subtitle: const Text('28/01/2024'),
+          leading: _buildLeadingIcon(), // Show the status icon
+          title: Text(widget.guidance.title), // Use title from GuidanceEntity
+          subtitle: Text(DateFormat('dd/MM/yyyy')
+              .format(widget.guidance.date)), // Use date from GuidanceEntity
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Kegiatan Anda:'),
-                  const Text('1. Bab 1 - Pendahuluan: Latar belakang magang'),
-                  const Text('2. Pembahasan Kegiatan Magang'),
-                  const Text('3. Analisis dan Evaluasi'),
+                  Text(widget.guidance
+                      .activity), // Use description from GuidanceEntity
                   const SizedBox(height: 16),
-                  TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'Masukkan revisi...',
-                      border: OutlineInputBorder(),
-                    ),
-                    maxLines: 3,
-                    onChanged: (value) {
-                      revisionText = value;
-                    },
-                  ),
+                  _buildRevisionField(),
                   const SizedBox(height: 16),
+// zaki.beta
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -94,6 +104,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                       ),
                     ],
                   ),
+// zaki.beta
                 ],
               ),
             ),
@@ -103,29 +114,69 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
     );
   }
 
+  // Build the leading icon based on the status
   Widget _buildLeadingIcon() {
-    switch (currentType) {
-      case 0:
+    switch (currentStatus) {
+      case LecturerGuidanceStatus.approved:
         return const Icon(Icons.check_circle, color: AppColors.success);
-      case 1:
+      case LecturerGuidanceStatus.inProgress:
         return const Icon(Icons.remove_circle, color: AppColors.gray);
-      case 2:
-        return const Icon(Icons.add_circle, color: AppColors.gray);
-      case 3:
+      case LecturerGuidanceStatus.rejected:
         return const Icon(Icons.error, color: AppColors.danger);
+      case LecturerGuidanceStatus.updated:
+        return const Icon(Icons.help, color: AppColors.warning);
       default:
         return const Icon(Icons.circle, color: AppColors.gray);
     }
   }
 
-  void _showConfirmationDialog(int newType) {
+  // TextField for entering revision comments
+  Widget _buildRevisionField() {
+    return TextField(
+      decoration: const InputDecoration(
+        hintText: 'Masukkan revisi...',
+        border: OutlineInputBorder(),
+      ),
+      maxLines: 3,
+      onChanged: (value) {
+        // Update revision text if necessary
+      },
+    );
+  }
+
+  // Action buttons to approve or reject the guidance
+  Widget _buildActionButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ElevatedButton.icon(
+          icon: const Icon(Icons.done),
+          label:
+              const Text('Confirm', style: TextStyle(color: AppColors.white)),
+          style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+          onPressed: () =>
+              _showConfirmationDialog(LecturerGuidanceStatus.approved),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.cancel),
+          label: const Text('Cancel', style: TextStyle(color: AppColors.white)),
+          style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+          onPressed: () =>
+              _showConfirmationDialog(LecturerGuidanceStatus.rejected),
+        ),
+      ],
+    );
+  }
+
+  // Confirmation dialog to change the status
+  void _showConfirmationDialog(LecturerGuidanceStatus newStatus) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Konfirmasi'),
           content: Text(
-              'Apakah Anda yakin ingin ${newType == 0 ? 'menyetujui' : 'merevisi'} bimbingan ini?'),
+              'Apakah Anda yakin ingin ${newStatus == LecturerGuidanceStatus.approved ? 'menyetujui' : 'merevisi'} bimbingan ini?'),
           actions: [
             TextButton(
               child: const Text('Batal'),
@@ -138,11 +189,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                 backgroundColor: AppColors.primary,
               ),
               onPressed: () {
-                setState(() {
-                  currentType = newType;
-                });
                 Navigator.of(context).pop();
-                // Tambahkan logika untuk menyimpan revisi jika diperlukan
               },
               child: const Text('Ya'),
             ),

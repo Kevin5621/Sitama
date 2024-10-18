@@ -5,4 +5,5 @@ class ApiUrls {
   static const studentGuidance = '${baseUrl}student/guidance';
 
   static const lecturerHome = '${baseUrl}lecturer/home';
+  static const detailStudent = '${baseUrl}lecturer/detailStudent';
 }

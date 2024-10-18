@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/domain/entities/student_home_entity.dart';
 
 class LecturerLogBookTab extends StatelessWidget {
-  const LecturerLogBookTab({super.key});
+  final List<LogBookEntity> logBooks;
+  
+  const LecturerLogBookTab({super.key, required this.logBooks});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 5,
+      itemCount: logBooks.length,
       itemBuilder: (context, index) {
         return Card(
           margin: const EdgeInsets.all(8),
@@ -15,8 +18,9 @@ class LecturerLogBookTab extends StatelessWidget {
           child: Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
-              title: Text('Log Book Entry ${index + 1}'),
+              title: Text(logBooks[index].title),
               subtitle: Text(
+// zaki.beta
                   'Date: ${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}'),
               children: [
                 Padding(
@@ -49,6 +53,7 @@ class LecturerLogBookTab extends StatelessWidget {
                       ),
                     ],
                   ),
+// zaki.beta
                 ),
               ],
             ),
