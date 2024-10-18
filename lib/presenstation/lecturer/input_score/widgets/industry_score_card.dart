@@ -7,7 +7,8 @@ class IndustryScoreCard extends StatelessWidget {
   final VoidCallback onRemove;
 
   const IndustryScoreCard(
-      {super.key, required this.score, required this.onRemove});
+      {Key? key, required this.score, required this.onRemove})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +30,20 @@ class IndustryScoreCard extends StatelessWidget {
                   child: TextField(
                     controller: TextEditingController(text: score.title),
                     onChanged: (value) => score.title = value,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Judul Nilai Industri',
                       border: InputBorder.none,
                     ),
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(Icons.delete),
                   onPressed: onRemove,
                 ),
               ],
             ),
-            const Divider(thickness: 1, height: 1),
+            Divider(thickness: 1, height: 1),
             const SizedBox(height: 16),
             InputField(
               label: 'Tanggal Mulai',

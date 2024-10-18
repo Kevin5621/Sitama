@@ -24,8 +24,8 @@ class LecturerHomePage extends StatefulWidget {
 class _LecturerHomePageState extends State<LecturerHomePage> {
   int _currentIndex = 0;
   final List<Widget> _pages = [
-    const LecturerHomeContent(),
-    const LecturerProfilePage(),
+    LecturerHomeContent(),
+    LecturerProfilePage(),
   ];
 
   @override
@@ -77,46 +77,37 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
 
             if (state is LecturerLoaded) {
               LecturerHomeEntity data = state.lecturerHomeEntity;
-// zaki.beta
-              List<LecturerStudentsEntity> students =
-                  data.students.where((student) {
-                var search = student.name
-                        .toLowerCase()
-                        .contains(_search.toLowerCase()) ||
-                    student.major.toLowerCase().contains(_search.toLowerCase());
-                return search;
+              List<LecturerStudentsEntity> students = data.students.where((student) {
+                return student.name.toLowerCase().contains(_search.toLowerCase()) || 
+                       student.major.toLowerCase().contains(_search.toLowerCase());
               }).toList();
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _header(data.name),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Mahasiswa Bimbingan',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          const Row(
-                            children: [
-                              Expanded(child: FilterJurusan()),
-                              SizedBox(width: 16),
-                              Expanded(child: FilterTahun()),
-                            ],
-                          ),
-                          ListView.separated(
-                              shrinkWrap: true,
-                              itemCount: students.length,
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                    width: 14,
-// zaki.beta
+              return BlocBuilder<SelectionBloc, SelectionState>(
+                builder: (context, selectionState) {
+                  return Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            _header(data.name, selectionState.isSelectionMode, context),
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Mahasiswa Bimbingan',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  const Row(
+                                    children: [
+                                      Expanded(child: FilterJurusan()),
+                                      SizedBox(width: 16),
+                                      Expanded(child: FilterTahun()),
+                                    ],
                                   ),
                                   ListView.separated(
                                     shrinkWrap: true,
@@ -265,7 +256,6 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
         return AlertDialog(
           title: const Text('Send Message'),
           content: TextField(
-
             onChanged: (value) {
               message = value;
             },

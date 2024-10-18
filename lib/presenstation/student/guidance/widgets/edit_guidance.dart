@@ -58,7 +58,7 @@ class _EditGuidanceState extends State<EditGuidance> {
         listener: (context, state) async {
           if (state is ButtonSuccessState) {
             var snackBar =
-                const SnackBar(content: Text('Berhasil Mengedit Bimbingan'));
+                SnackBar(content: Text('Berhasil Mengedit Bimbingan'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.pushAndRemoveUntil(
               context,
@@ -77,23 +77,23 @@ class _EditGuidanceState extends State<EditGuidance> {
           }
         },
         child: AlertDialog(
-          title: const Text('Edit Bimbingan'),
+          title: Text('Edit Bimbingan'),
           content: Form(
-            child: SizedBox(
+            child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
                     controller: _title,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Judul',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   InkWell(
                     onTap: () async {
                       final DateTime? picked = await showDatePicker(
@@ -118,10 +118,10 @@ class _EditGuidanceState extends State<EditGuidance> {
                       child: Text(DateFormat('dd/MM/yyyy').format(_date)),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: _activity,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Aktivitas',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -154,7 +154,7 @@ class _EditGuidanceState extends State<EditGuidance> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text('Cancel'),
             ),
           ],
         ),

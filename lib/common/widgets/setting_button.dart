@@ -6,11 +6,11 @@ class SettingButton extends StatelessWidget {
   final VoidCallback onTap;
 
   const SettingButton({
-    super.key,
+    Key? key,
     required this.icon,
     required this.title,
     required this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

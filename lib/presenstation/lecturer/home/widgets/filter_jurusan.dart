@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 
 class FilterJurusan extends StatefulWidget {
-  const FilterJurusan({super.key});
+  const FilterJurusan({Key? key}) : super(key: key);
 
   @override
   State<FilterJurusan> createState() => _FilterJurusanState();
@@ -32,7 +32,7 @@ class _FilterJurusanState extends State<FilterJurusan> {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<String>(
         isExpanded: true,
-        hint: const Text(
+        hint: Text(
           'Jurusan',
           style: TextStyle(
             fontSize: 14,
