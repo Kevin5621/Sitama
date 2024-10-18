@@ -28,7 +28,7 @@ class _GuidancePageState extends State<GuidancePage> {
         child: BlocBuilder<GuidanceStudentCubit, GuidanceStudentState>(
           builder: (context, state) {
             if (state is GuidanceLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
             }
             if (state is GuidanceLoaded) {
               List<GuidanceEntity> guidances =
@@ -41,7 +41,7 @@ class _GuidancePageState extends State<GuidancePage> {
 
               return CustomScrollView(
                 slivers: [
-                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                  SliverToBoxAdapter(child: SizedBox(height: 12)),
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -57,13 +57,13 @@ class _GuidancePageState extends State<GuidancePage> {
                               onFilterPressed: () {},
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(Icons.filter_list_outlined),
+                          SizedBox(width: 10),
+                          Icon(Icons.filter_list_outlined),
                         ],
                       ),
                     ),
                   ),
-                  const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                  SliverToBoxAdapter(child: SizedBox(height: 20)),
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) => GuidanceCard(
@@ -99,7 +99,7 @@ class _GuidancePageState extends State<GuidancePage> {
   AppBar _appBar() {
     return AppBar(
       toolbarHeight: 80.0,
-      title: const Text(
+      title: Text(
         'Bimbingan',
         style: TextStyle(
           fontSize: 24,
@@ -114,11 +114,11 @@ class _GuidancePageState extends State<GuidancePage> {
             showDialog(
               context: context,
               builder: (context) {
-                return const AddGuidance();
+                return AddGuidance();
               },
             );
           },
-          icon: const Icon(Icons.add),
+          icon: Icon(Icons.add),
         )
       ],
       backgroundColor: Colors.transparent,

@@ -25,6 +25,7 @@ class DeleteGuidance extends StatefulWidget {
 }
 
 class _DeleteGuidanceState extends State<DeleteGuidance> {
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,7 +34,7 @@ class _DeleteGuidanceState extends State<DeleteGuidance> {
         listener: (context, state) async {
           if (state is ButtonSuccessState) {
             var snackBar =
-                const SnackBar(content: Text('Berhasil Menghapus Bimbingan'));
+                SnackBar(content: Text('Berhasil Menghapus Bimbingan'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.pushAndRemoveUntil(
               context,
@@ -52,9 +53,8 @@ class _DeleteGuidanceState extends State<DeleteGuidance> {
           }
         },
         child: AlertDialog(
-          title: const Text('Hapus Bimbingan'),
-          content:
-              Text('Apakah anda ingin menghapus bimbingan "${widget.title}?'),
+          title: Text('Hapus Bimbingan'),
+          content: Text('Apakah anda ingin menghapus bimbingan "${widget.title}?'),
           actions: [
             Builder(builder: (context) {
               return BasicAppButton(
@@ -72,7 +72,7 @@ class _DeleteGuidanceState extends State<DeleteGuidance> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text('Cancel'),
             ),
           ],
         ),

@@ -17,9 +17,10 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             _header(),
-            const SizedBox(height: 22),
+            SizedBox(height: 22),
             _industry(),
-            const SizedBox(height: 120),
+            SizedBox(height: 120),
+
             _settingsList(context),
           ],
         ),
@@ -29,7 +30,7 @@ class ProfilePage extends StatelessWidget {
 
   Padding _settingsList(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           SettingButton(
@@ -50,7 +51,7 @@ class ProfilePage extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return const LogOutAlert();
+                  return LogOutAlert();
                 },
               );
             },
@@ -62,11 +63,11 @@ class ProfilePage extends StatelessWidget {
 
   Container _industry() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       width: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
             color: AppColors.gray500,
             offset: Offset(0, 2),
@@ -75,7 +76,7 @@ class ProfilePage extends StatelessWidget {
         ],
         color: AppColors.white,
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
@@ -131,7 +132,7 @@ class ProfilePage extends StatelessWidget {
       children: [
         Container(
           height: 160,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(AppImages.homePattern),
               fit: BoxFit.cover,
@@ -140,8 +141,8 @@ class ProfilePage extends StatelessWidget {
         ),
         Column(
           children: [
-            const SizedBox(height: 40),
-            const Center(
+            SizedBox(height: 40),
+            Center(
               child: Text(
                 'Profile',
                 style: TextStyle(
@@ -150,7 +151,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 45),
+            SizedBox(height: 45),
             Container(
               height: 80,
               width: 80,
@@ -159,7 +160,7 @@ class ProfilePage extends StatelessWidget {
                   color: AppColors.background,
                 ),
                 borderRadius: BorderRadius.circular(32),
-                image: const DecorationImage(
+                image: DecorationImage(
                   image: AssetImage(AppImages.photoProfile),
                   fit: BoxFit.cover,
                 ),
@@ -170,13 +171,13 @@ class ProfilePage extends StatelessWidget {
                   width: 30,
                   height: 30,
                   transform: Matrix4.translationValues(5, 5, 0),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
                     onPressed: () {},
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.edit,
                       color: AppColors.white,
                       size: 16,
@@ -185,15 +186,15 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            const Text(
+            SizedBox(height: 16),
+            Text(
               'Lucas Scott',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
             ),
-            const Text(
+            Text(
               '3.34.23.2.24',
               style: TextStyle(
                 fontWeight: FontWeight.w500,
@@ -201,7 +202,7 @@ class ProfilePage extends StatelessWidget {
                 color: AppColors.gray,
               ),
             ),
-            const Text(
+            Text(
               'lucasScott@polines.com',
               style: TextStyle(
                 fontWeight: FontWeight.w500,

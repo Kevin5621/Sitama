@@ -20,40 +20,12 @@ class LecturerLogBookTab extends StatelessWidget {
             child: ExpansionTile(
               title: Text(logBooks[index].title),
               subtitle: Text(
-// zaki.beta
-                  'Date: ${DateTime.now().subtract(Duration(days: index)).toString().split(' ')[0]}'),
+                  'Date: ${logBooks[index].date}'),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'),
-                      const SizedBox(height: 16),
-                      const Text('Komentar Dosen:',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const TextField(
-                        maxLines: 3,
-                        decoration: InputDecoration(
-                          hintText: 'Tambahkan komentar di sini...',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          // TODO: Implementasi logika untuk menyimpan komentar
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Komentar berhasil disimpan')),
-                          );
-                        },
-                        child: const Text('Simpan Komentar'),
-                      ),
-                    ],
-                  ),
-// zaki.beta
+                  child: Text(
+                      '${logBooks[index].activity}'),
                 ),
               ],
             ),

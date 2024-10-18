@@ -5,8 +5,8 @@ class ExpandableSection extends StatelessWidget {
   final String title;
   final List<String> fields;
 
-  const ExpandableSection(
-      {super.key, required this.title, required this.fields});
+  const ExpandableSection({Key? key, required this.title, required this.fields})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ExpandableSection extends StatelessWidget {
         title: Text(title),
         leading: Icon(_getIconForTitle(title)),
         children: [
-          const Divider(thickness: 1, height: 1),
+          Divider(thickness: 1, height: 1),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

@@ -12,7 +12,7 @@ class LogBookPage extends StatelessWidget {
       appBar: _appBar(),
       body: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+          SliverToBoxAdapter(child: SizedBox(height: 12)),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -24,13 +24,13 @@ class LogBookPage extends StatelessWidget {
                       onFilterPressed: () {},
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  const Icon(Icons.filter_list_outlined),
+                  SizedBox(width: 10),
+                  Icon(Icons.filter_list_outlined),
                 ],
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 20)),
+          SliverToBoxAdapter(child: SizedBox(height: 20)),
           _listLogBook(),
         ],
       ),
@@ -40,7 +40,7 @@ class LogBookPage extends StatelessWidget {
   AppBar _appBar() {
     return AppBar(
       toolbarHeight: 80.0,
-      title: const Text(
+      title: Text(
         'Log Book',
         style: TextStyle(
           fontSize: 24,
@@ -52,7 +52,7 @@ class LogBookPage extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.add),
+          icon: Icon(Icons.add),
         )
       ],
       backgroundColor: Colors.transparent,
