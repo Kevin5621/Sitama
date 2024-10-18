@@ -38,12 +38,12 @@ class _AddGuidanceState extends State<AddGuidance> {
         listener: (context, state) async {
           if (state is ButtonSuccessState) {
             var snackBar =
-                SnackBar(content: Text('Berhasil Menambahkan Bimbingan'));
+                const SnackBar(content: Text('Berhasil Menambahkan Bimbingan'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => HomePage(
+                builder: (context) => const HomePage(
                   currentIndex: 1,
                 ),
               ),
@@ -57,23 +57,23 @@ class _AddGuidanceState extends State<AddGuidance> {
           }
         },
         child: AlertDialog(
-          title: Text('Tambah Bimbingan'),
+          title: const Text('Tambah Bimbingan'),
           content: Form(
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
                     controller: _title,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Judul',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   InkWell(
                     onTap: () async {
                       final DateTime? picked = await showDatePicker(
@@ -98,10 +98,10 @@ class _AddGuidanceState extends State<AddGuidance> {
                       child: Text(DateFormat('dd/MM/yyyy').format(_date)),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     controller: _activity,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Aktivitas',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -133,7 +133,7 @@ class _AddGuidanceState extends State<AddGuidance> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         ),

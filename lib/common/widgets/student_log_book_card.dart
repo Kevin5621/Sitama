@@ -20,10 +20,10 @@ class LogBookCard extends StatelessWidget {
   final Function(LogBookItem) onEdit;
 
   const LogBookCard({
-    Key? key,
+    super.key,
     required this.item,
     required this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

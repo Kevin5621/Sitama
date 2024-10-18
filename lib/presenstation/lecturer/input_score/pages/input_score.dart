@@ -9,8 +9,7 @@ import 'package:sistem_magang/domain/usecases/update_scores.dart';
 class InputScorePage extends StatefulWidget {
   final UpdateScoresUseCase updateScoresUseCase;
 
-  const InputScorePage({Key? key, required this.updateScoresUseCase})
-      : super(key: key);
+  const InputScorePage({super.key, required this.updateScoresUseCase});
 
   @override
   _InputScorePageState createState() => _InputScorePageState();
@@ -38,7 +37,7 @@ class _InputScorePageState extends State<InputScorePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ExpandableSection(
+              const ExpandableSection(
                 title: 'Proposal',
                 fields: [
                   'Tujuan Sasaran',
@@ -47,7 +46,7 @@ class _InputScorePageState extends State<InputScorePage> {
                 ],
               ),
               const SizedBox(height: 16),
-              ExpandableSection(
+              const ExpandableSection(
                 title: 'Laporan',
                 fields: ['Sistematika Penulisan', 'Bahasa', 'Isi'],
               ),
@@ -104,11 +103,11 @@ class _InputScorePageState extends State<InputScorePage> {
     try {
       await widget.updateScoresUseCase.execute(_industryScores);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Scores updated successfully')),
+        const SnackBar(content: Text('Scores updated successfully')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update scores')),
+        const SnackBar(content: Text('Failed to update scores')),
       );
     }
   }
