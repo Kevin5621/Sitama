@@ -20,6 +20,7 @@ import 'package:sistem_magang/domain/usecases/get_home_student.dart';
 import 'package:sistem_magang/domain/usecases/is_logged_in.dart';
 import 'package:sistem_magang/domain/usecases/log_out.dart';
 import 'package:sistem_magang/domain/usecases/signin.dart';
+import 'package:sistem_magang/domain/usecases/update_status_guidance.dart';
 
 final sl = GetIt.instance;
 
@@ -41,13 +42,16 @@ void setupServiceLocator() {
   sl.registerSingleton<SigninUseCase>(SigninUseCase());
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
   sl.registerSingleton<GetHomeStudentUseCase>(GetHomeStudentUseCase());
-  sl.registerSingleton<GetGuidancesStudentUseCase>(GetGuidancesStudentUseCase());
+  sl.registerSingleton<GetGuidancesStudentUseCase>(
+      GetGuidancesStudentUseCase());
   sl.registerSingleton<AddGuidanceUseCase>(AddGuidanceUseCase());
   sl.registerSingleton<EditGuidanceUseCase>(EditGuidanceUseCase());
   sl.registerSingleton<DeleteGuidanceUseCase>(DeleteGuidanceUseCase());
 
   sl.registerSingleton<GetHomeLecturerUseCase>(GetHomeLecturerUseCase());
   sl.registerSingleton<GetDetailStudentUseCase>(GetDetailStudentUseCase());
-  
+  sl.registerSingleton<UpdateStatusGuidanceUseCase>(
+      UpdateStatusGuidanceUseCase());
+
   sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
 }

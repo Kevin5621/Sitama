@@ -72,7 +72,8 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
     return Scaffold(
       body: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => LecturerDisplayCubit()..displayLecturer()),
+          BlocProvider(
+              create: (context) => LecturerDisplayCubit()..displayLecturer()),
           BlocProvider(create: (context) => SelectionBloc()),
         ],
         child: BlocBuilder<LecturerDisplayCubit, LecturerDisplayState>(
@@ -83,10 +84,12 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
 
             if (state is LecturerLoaded) {
               LecturerHomeEntity data = state.lecturerHomeEntity;
-              
-              List<LecturerStudentsEntity> students = data.students.where((student) {
-                return student.name.toLowerCase().contains(_search.toLowerCase()) || 
-                       student.major.toLowerCase().contains(_search.toLowerCase());
+              List<LecturerStudentsEntity>? students =
+                  data.students?.where((student) {
+                return student.name
+                        .toLowerCase()
+                        .contains(_search.toLowerCase()) ||
+                    student.major.toLowerCase().contains(_search.toLowerCase());
               }).toList();
 
               // BlocBuilder untuk menangani state dari SelectionBloc
@@ -94,69 +97,91 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
                 builder: (context, selectionState) {
                   return Stack(
                     children: [
-                      CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: _header(data.name, selectionState.isSelectionMode, context),
-                          ),
-                          SliverPadding(
-                            padding: const EdgeInsets.all(16),
-                            sliver: SliverList(
-                              delegate: SliverChildListDelegate([
-                                const Text(
-                                  'Mahasiswa Bimbingan',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                      SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            _header(data.name, selectionState.isSelectionMode,
+                                context),
+                            Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Mahasiswa Bimbingan',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                // Widget untuk filter jurusan dan tahun mahasiswa
-                                const Row(
-                                  children: [
-                                    Expanded(child: FilterJurusan()),
-                                    SizedBox(width: 16),
-                                    Expanded(child: FilterTahun()),
+                                  if (students == null) ...[
+                                    Text('Tidak Memiliki Mahasiswa Bimbingan'),
                                   ],
-                                ),
-                                // Menampilkan daftar mahasiswa bimbingan dalam bentuk card
-                                ...students.map((student) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 14),
-                                  child: StudentCard(
-                                    id: student.id,
-                                    imageUrl: 'https://picsum.photos/200/300',
-                                    name: student.name,
-                                    jurusan: student.major,
-                                    nim: student.username,
-                                    isSelected: selectionState.selectedIds.contains(student.id),
-                                    onTap: () {
-                                      if (selectionState.isSelectionMode) {
-                                        context.read<SelectionBloc>().add(ToggleItemSelection(student.id));
-                                      } else {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DetailStudentPage(id: student.id),
-                                          ),
+                                  if (students != null) ...[
+                                    const SizedBox(height: 16),
+                                    const Row(
+                                      children: [
+                                        Expanded(child: FilterJurusan()),
+                                        SizedBox(width: 16),
+                                        Expanded(child: FilterTahun()),
+                                      ],
+                                    ),
+                                    ListView.separated(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: students.length,
+                                      separatorBuilder: (context, index) =>
+                                          const SizedBox(height: 14),
+                                      itemBuilder: (context, index) {
+                                        return StudentCard(
+                                          id: students[index].id,
+                                          imageUrl:
+                                              'https://picsum.photos/200/300',
+                                          name: students[index].name,
+                                          jurusan: students[index].major,
+                                          nim: students[index].username,
+                                          isSelected: selectionState.selectedIds
+                                              .contains(students[index].id),
+                                          onTap: () {
+                                            if (selectionState
+                                                .isSelectionMode) {
+                                              context.read<SelectionBloc>().add(
+                                                  ToggleItemSelection(
+                                                      students[index].id));
+                                            } else {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailStudentPage(
+                                                            id: students[index]
+                                                                .id,
+                                                          )));
+                                            }
+                                          },
+                                          onLongPress: () {
+                                            if (!selectionState
+                                                .isSelectionMode) {
+                                              context
+                                                  .read<SelectionBloc>()
+                                                  .add(ToggleSelectionMode());
+                                              context.read<SelectionBloc>().add(
+                                                  ToggleItemSelection(
+                                                      students[index].id));
+                                            }
+                                          },
                                         );
-                                      }
-                                    },
-                                    // Long press handler untuk mengaktifkan mode seleksi
-                                    onLongPress: () {
-                                      if (!selectionState.isSelectionMode) {
-                                        context.read<SelectionBloc>().add(ToggleSelectionMode());
-                                        context.read<SelectionBloc>().add(ToggleItemSelection(student.id));
-                                      }
-                                    },
-                                  ),
-                                )).toList(),
-                              ]),
+                                      },
+                                    ),
+                                  ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      // Floating action button yang muncul saat mode seleksi aktif dan ada item yang dipilih
-                      if (selectionState.isSelectionMode && selectionState.selectedIds.isNotEmpty)
+                      if (selectionState.isSelectionMode)
                         Positioned(
                           bottom: 16,
                           right: 16,
@@ -205,6 +230,7 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+
           // Jika mode seleksi aktif, tampilkan header khusus mode seleksi
           if (isSelectionMode)
             Row(
@@ -242,6 +268,7 @@ class _LecturerHomeContentState extends State<LecturerHomeContent> {
             ),
           ],
           const SizedBox(height: 26),
+          
           // Tampilkan search field ketika mode seleksi tidak aktif
           if (!isSelectionMode)
             SearchField(

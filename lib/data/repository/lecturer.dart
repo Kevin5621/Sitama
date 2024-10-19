@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:sistem_magang/data/models/guidance.dart';
 import 'package:sistem_magang/data/models/lecturer_detail_student.dart';
 import 'package:sistem_magang/data/models/lecturer_home.dart';
 import 'package:sistem_magang/data/source/lecturer_api_service.dart';
@@ -55,6 +56,19 @@ class LecturerRepositoryImpl extends LecturerRepository{
         } catch (e) {
           return Left("Parsing error: $e");
         }
+      },
+    );
+  }
+  
+  @override
+  Future<Either> updateStatusGuidance(UpdateStatusGuidanceReqParams request) async {
+    Either result = await sl<LecturerApiService>().updateStatusGuidance(request);
+    return result.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        return Right(data);
       },
     );
   }

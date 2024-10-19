@@ -3,7 +3,7 @@ import 'package:sistem_magang/domain/entities/lecturer_home_entity.dart';
 
 class LecturerHomeModel {
   final String name;
-  final List<LecturerStudentsModel> students;
+  final List<LecturerStudentsModel> ? students;
 
   LecturerHomeModel({required this.name, required this.students});
 
@@ -23,8 +23,7 @@ extension LecturerHomeXModel on LecturerHomeModel {
   LecturerHomeEntity toEntity() {
     return LecturerHomeEntity(
       name: name,
-      students: students
-          .map<LecturerStudentsEntity>((data) => LecturerStudentsEntity(
+      students: students?.map<LecturerStudentsEntity>((data) => LecturerStudentsEntity(
               id: data.id,
               name: data.name,
               username: data.username,

@@ -3,7 +3,8 @@ import 'selection_event.dart';
 import 'selection_state.dart';
 
 class SelectionBloc extends Bloc<SelectionEvent, SelectionState> {
-  SelectionBloc() : super(const SelectionState(isSelectionMode: false, selectedIds: {})) {
+  SelectionBloc()
+      : super(const SelectionState(isSelectionMode: false, selectedIds: {})) {
     on<ToggleSelectionMode>(_onToggleSelectionMode);
     on<ToggleItemSelection>(_onToggleItemSelection);
     on<SelectAll>(_onSelectAll);
@@ -11,11 +12,15 @@ class SelectionBloc extends Bloc<SelectionEvent, SelectionState> {
     on<SendMessage>(_onSendMessage);
   }
 
-  void _onToggleSelectionMode(ToggleSelectionMode event, Emitter<SelectionState> emit) {
-    emit(state.copyWith(isSelectionMode: !state.isSelectionMode, selectedIds: {}));
+  void _onToggleSelectionMode(
+      ToggleSelectionMode event, Emitter<SelectionState> emit) {
+    emit(state
+        .copyWith(isSelectionMode: !state.isSelectionMode, selectedIds: {}));
   }
 
-  void _onToggleItemSelection(ToggleItemSelection event, Emitter<SelectionState> emit) {
+  void _onToggleItemSelection(
+      ToggleItemSelection event, Emitter<SelectionState> emit) {
+
     final selectedIds = Set<int>.from(state.selectedIds);
     if (selectedIds.contains(event.id)) {
       selectedIds.remove(event.id);
@@ -41,3 +46,4 @@ class SelectionBloc extends Bloc<SelectionEvent, SelectionState> {
     emit(state.copyWith(isSelectionMode: false, selectedIds: {}));
   }
 }
+

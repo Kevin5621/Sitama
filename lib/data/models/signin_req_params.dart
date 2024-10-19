@@ -11,6 +11,4 @@ class SigninReqParams {
       'password': password,
     };
   }
-
-  
 }

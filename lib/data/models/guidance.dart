@@ -116,3 +116,22 @@ class EditGuidanceReqParams {
     };
   }
 }
+
+class UpdateStatusGuidanceReqParams {
+  final int id;
+  final String status;
+  final String ? lecturer_note;
+
+  UpdateStatusGuidanceReqParams({
+    required this.id,
+    required this.status,
+    this.lecturer_note,
+  });
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'status': status,
+      'lecturer_note': lecturer_note,
+    };
+  }
+}

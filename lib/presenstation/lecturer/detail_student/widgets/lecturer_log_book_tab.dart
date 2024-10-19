@@ -13,7 +13,8 @@ class LecturerLogBookTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: logBooks.length, 
+      shrinkWrap: true,
+      itemCount: logBooks.length,
       itemBuilder: (context, index) {
         return Card(
           margin: const EdgeInsets.all(8), 
