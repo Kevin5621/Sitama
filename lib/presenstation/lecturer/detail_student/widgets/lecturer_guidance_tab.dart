@@ -39,10 +39,11 @@ class LecturerGuidanceCard extends StatefulWidget {
   final int student_id;
 
   const LecturerGuidanceCard({
-    Key? key,
+    super.key,
     required this.guidance,
     required this.student_id,
   }) : super(key: key);
+
 
   @override
   _LecturerGuidanceCardState createState() => _LecturerGuidanceCardState();
@@ -232,7 +233,17 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                 }),
               ],
             ),
-          ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Ya'),
+            ),
+          ],
+
         );
       },
     );
