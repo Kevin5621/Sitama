@@ -6,7 +6,8 @@ class InputField extends StatelessWidget {
   final String label;
   final TextEditingController? controller;
 
-  const InputField({super.key, required this.label, this.controller});
+  const InputField({Key? key, required this.label, this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class InputField extends StatelessWidget {
         children: [
           Expanded(
             flex: 3,
-            child: Text(label, style: const TextStyle(fontSize: 16)),
+            child: Text(label, style: TextStyle(fontSize: 16)),
           ),
           Expanded(
             flex: 2,
@@ -24,7 +25,7 @@ class InputField extends StatelessWidget {
               controller: controller,
               decoration: InputDecoration(
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(4),
                 ),
@@ -33,7 +34,7 @@ class InputField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: AppColors.primary),
+                  borderSide: BorderSide(color: AppColors.primary),
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),

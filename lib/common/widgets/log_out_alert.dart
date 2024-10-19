@@ -22,7 +22,7 @@ class LogOutAlert extends StatelessWidget {
           if (state is ButtonSuccessState) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const WelcomePages()),
+              MaterialPageRoute(builder: (context) => WelcomePages()),
               (route) => false,
             );
           }
@@ -32,7 +32,7 @@ class LogOutAlert extends StatelessWidget {
         },
         child: Builder(
           builder: (context) => AlertDialog(
-            content: const Text(
+            content: Text(
               'Apakah anda yakin ingin meninggalkan akun ini ?',
             ),
             actions: [
@@ -42,9 +42,9 @@ class LogOutAlert extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                   style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: AppColors.primary),
+                    side: BorderSide(color: AppColors.primary),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Cancel',
                   ),
                 ),

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../widgets/guidace_item.dart';
 
+
 class BimbinganItemWidget extends StatelessWidget {
   final BimbinganItem item;
   final VoidCallback onEdit;
 
   const BimbinganItemWidget({
-    super.key,
+    Key? key,
     required this.item,
     required this.onEdit,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

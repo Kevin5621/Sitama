@@ -17,14 +17,14 @@ class GuidanceCard extends StatelessWidget {
   final int curentPage;
 
   const GuidanceCard({
-    super.key,
+    Key? key,
     required this.id,
     required this.title,
     required this.date,
     required this.status,
     required this.description,
     required this.curentPage,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class GuidanceCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(description, textAlign: TextAlign.left),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   Row(
                     children: [
                       GestureDetector(
@@ -65,7 +65,7 @@ class GuidanceCard extends StatelessWidget {
                             },
                           );
                         },
-                        child: const Row(
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -84,7 +84,7 @@ class GuidanceCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
                           showDialog(
@@ -98,7 +98,7 @@ class GuidanceCard extends StatelessWidget {
                             },
                           );
                         },
-                        child: const Row(
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

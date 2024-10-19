@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Stack(children: [
         Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(AppImages.pattern), fit: BoxFit.cover)),
         ),
@@ -47,13 +47,13 @@ class _SplashPageState extends State<SplashPage> {
           child:
               BlocBuilder<AuthStateCubit, AuthState>(builder: (context, state) {
             if (state is AuthenticatedStudent) {
-              return const HomePage();
+              return HomePage();
             }
             if (state is AuthenticatedLecturer) {
-              return const LecturerHomePage();
+              return LecturerHomePage();
             }
             if (state is UnAuthenticated) {
-              return const WelcomePages();
+              return WelcomePages();
             }
             return Container();
           }),
