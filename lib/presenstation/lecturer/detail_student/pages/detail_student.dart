@@ -201,7 +201,7 @@ class DetailStudentPage extends StatelessWidget {
                 ),
             ],
           ),
-          ...content.map((item) => Text(item)),
+          ...content.map((item) => Text(item)).toList(),
         ],
       ),
     );

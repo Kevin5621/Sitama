@@ -41,24 +41,18 @@ class LecturerStudentsModel {
   final int id;
   final String name;
   final String username;
-  // ignore: non_constant_identifier_names
   final String the_class;
-  // ignore: non_constant_identifier_names
   final String study_program;
   final String major;
-  // ignore: non_constant_identifier_names
   final String academic_year;
 
   LecturerStudentsModel(
       {required this.id,
       required this.name,
       required this.username,
-      // ignore: non_constant_identifier_names
       required this.the_class,
-      // ignore: non_constant_identifier_names
       required this.study_program,
       required this.major,
-      // ignore: non_constant_identifier_names
       required this.academic_year});
 
   factory LecturerStudentsModel.fromMap(Map<String, dynamic> map) {

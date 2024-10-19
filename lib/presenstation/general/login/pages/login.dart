@@ -22,10 +22,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late final TextEditingController _usernameController =
-      TextEditingController();
-  late final TextEditingController _passwordController =
-      TextEditingController();
+  late TextEditingController _usernameController = TextEditingController();
+  late TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
 
   @override
@@ -51,14 +49,14 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => const HomePage(),
+                    builder: (BuildContext context) => HomePage(),
                   ),
                 );
               } else {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => const LecturerHomePage(),
+                    builder: (BuildContext context) => LecturerHomePage(),
                   ),
                 );
               }
@@ -79,19 +77,19 @@ class _LoginPageState extends State<LoginPage> {
                     child: Image.asset(AppImages.loginIlustration),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Row(
                   children: [
                     IconButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.arrow_back_ios_rounded,
                         size: 16,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Login',
                       style: TextStyle(
                         fontSize: 16,
@@ -108,14 +106,14 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextField(
                         controller: _usernameController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'NIM / NIP',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       TextField(
                         controller: _passwordController,
                         obscureText: _obscureText,
@@ -138,15 +136,15 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
+                      SizedBox(height: 16),
+                      Text(
                         'Lupa Kata Sandi ?',
                         style: TextStyle(
                           color: AppColors.info,
                           fontSize: 12,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       Builder(builder: (context) {
                         return BasicAppButton(
                           onPressed: () {
