@@ -1,6 +1,6 @@
 class LecturerHomeEntity {
   final String name;
-  final List<LecturerStudentsEntity> students;
+  final List<LecturerStudentsEntity> ? students;
 
   LecturerHomeEntity({required this.name, required this.students});
 

@@ -79,7 +79,7 @@ class DetailStudentPage extends StatelessWidget {
                     child: Column(
                       children: [
                         _buildInfoBoxes(context, detailStudent.internships),
-                        _buildTabSection(detailStudent.guidances, detailStudent.log_book),
+                        _buildTabSection(context, detailStudent.guidances, detailStudent.log_book),
                       ],
                     ),
                   ),
@@ -207,7 +207,7 @@ class DetailStudentPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTabSection(List<GuidanceEntity> guidances, List<LogBookEntity> logBooks) {
+  Widget _buildTabSection(BuildContext context, List<GuidanceEntity> guidances, List<LogBookEntity> logBooks) {
     return DefaultTabController(
       length: 2,
       child: Column(
@@ -222,10 +222,10 @@ class DetailStudentPage extends StatelessWidget {
             indicatorColor: AppColors.primary,
           ),
           SizedBox(
-            height: 300, // Adjust this height as needed
+            height: MediaQuery.of(context).size.height * 0.8,
             child: TabBarView(
               children: [
-                LecturerGuidanceTab(guidances: guidances),
+                LecturerGuidanceTab(guidances: guidances, student_id: id,),
                 LecturerLogBookTab(logBooks: logBooks,),
               ],
             ),

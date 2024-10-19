@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sistem_magang/common/bloc/button/button_state.dart';
+import 'package:sistem_magang/common/bloc/button/button_state_cubit.dart';
+import 'package:sistem_magang/common/widgets/basic_app_button.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
+import 'package:sistem_magang/data/models/guidance.dart';
 import 'package:sistem_magang/domain/entities/guidance_entity.dart';
+import 'package:sistem_magang/domain/usecases/update_status_guidance.dart';
+import 'package:sistem_magang/presenstation/lecturer/detail_student/pages/detail_student.dart';
+import 'package:sistem_magang/service_locator.dart';
 
 class LecturerGuidanceTab extends StatelessWidget {
   final List<GuidanceEntity> guidances;
+  final int student_id;
 
-  const LecturerGuidanceTab({super.key, required this.guidances});
+  const LecturerGuidanceTab({super.key, required this.guidances, required this.student_id});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: guidances.length,
       itemBuilder: (context, index) {
         return LecturerGuidanceCard(
           guidance: guidances[index],
+          student_id: student_id,
         );
       },
     );
@@ -24,11 +35,13 @@ class LecturerGuidanceTab extends StatelessWidget {
 enum LecturerGuidanceStatus { approved, rejected, inProgress, updated }
 
 class LecturerGuidanceCard extends StatefulWidget {
-  final GuidanceEntity guidance; // Use GuidanceEntity directly
+  final GuidanceEntity guidance;
+  final int student_id;
 
   const LecturerGuidanceCard({
     Key? key,
     required this.guidance,
+    required this.student_id,
   }) : super(key: key);
 
   @override
@@ -37,6 +50,7 @@ class LecturerGuidanceCard extends StatefulWidget {
 
 class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
   late LecturerGuidanceStatus currentStatus;
+  TextEditingController _lecturerNote = TextEditingController();
 
   @override
   void initState() {
@@ -71,12 +85,20 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.guidance
-                      .activity), // Use description from GuidanceEntity
+                  Text('Catatan Mahasiswa :'),
+                  Text(widget.guidance.activity),
                   const SizedBox(height: 16),
-                  _buildRevisionField(),
-                  const SizedBox(height: 16),
-                  _buildActionButtons(),
+                  if (currentStatus != LecturerGuidanceStatus.inProgress) ...[
+                    Text('Catatan Anda :'),
+                    Text(widget.guidance.lecturer_note),
+                    const SizedBox(height: 16),
+                  ],
+                  if (currentStatus != LecturerGuidanceStatus.approved &&
+                      currentStatus != LecturerGuidanceStatus.rejected) ...[
+                    _buildRevisionField(),
+                    const SizedBox(height: 16),
+                    _buildActionButtons(),
+                  ],
                 ],
               ),
             ),
@@ -102,12 +124,16 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
     }
   }
 
-  // TextField for entering revision comments
   Widget _buildRevisionField() {
     return TextField(
-      decoration: const InputDecoration(
-        hintText: 'Masukkan revisi...',
-        border: OutlineInputBorder(),
+      controller: _lecturerNote,
+      decoration: InputDecoration(
+        hintText: 'Masukkan catatan...',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       ),
       maxLines: 3,
       onChanged: (value) {
@@ -119,19 +145,28 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
   // Action buttons to approve or reject the guidance
   Widget _buildActionButtons() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton.icon(
-          icon: const Icon(Icons.done),
+          icon: const Icon(
+            Icons.done,
+            color: AppColors.success,
+            size: 16,
+          ),
           label:
-              const Text('Confirm', style: TextStyle(color: AppColors.white)),
+              const Text('Setujui', style: TextStyle(color: AppColors.white)),
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
           onPressed: () =>
               _showConfirmationDialog(LecturerGuidanceStatus.approved),
         ),
+        SizedBox(width: 10),
         ElevatedButton.icon(
-          icon: const Icon(Icons.cancel),
-          label: const Text('Cancel', style: TextStyle(color: AppColors.white)),
+          icon: const Icon(
+            Icons.close,
+            color: AppColors.danger,
+            size: 16,
+          ),
+          label: const Text('Revisi', style: TextStyle(color: AppColors.white)),
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
           onPressed: () =>
               _showConfirmationDialog(LecturerGuidanceStatus.rejected),
@@ -145,27 +180,59 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Konfirmasi'),
-          content: Text(
-              'Apakah Anda yakin ingin ${newStatus == LecturerGuidanceStatus.approved ? 'menyetujui' : 'merevisi'} bimbingan ini?'),
-          actions: [
-            TextButton(
-              child: const Text('Batal'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        return BlocProvider(
+          create: (context) => ButtonStateCubit(),
+          child: BlocListener<ButtonStateCubit, ButtonState>(
+            listener: (context, state) async {
+              if (state is ButtonSuccessState) {
+                var snackBar = SnackBar(
+                    content: Text('Berhasil mengupdate status bimbingan'));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DetailStudentPage(id: widget.student_id),
+                  ),
+                );
+              }
+              if (state is ButtonFailurState) {
+                var snackBar = SnackBar(content: Text(state.errorMessage));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+            },
+            child: AlertDialog(
+              title: const Text('Konfirmasi'),
+              content: Text(
+                  'Apakah Anda yakin ingin ${newStatus == LecturerGuidanceStatus.approved ? 'menyetujui' : 'merevisi'} bimbingan ini?'),
+              actions: [
+                TextButton(
+                  child: const Text('Batal'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                Builder(builder: (context) {
+                  return BasicAppButton(
+                    onPressed: () {
+                      context.read<ButtonStateCubit>().excute(
+                            usecase: sl<UpdateStatusGuidanceUseCase>(),
+                            params: UpdateStatusGuidanceReqParams(
+                                id: widget.guidance.id,
+                                status:
+                                    newStatus == LecturerGuidanceStatus.approved
+                                        ? "approved"
+                                        : "rejected",
+                                lecturer_note: _lecturerNote.text),
+                          );
+                    },
+                    title: 'Konfirmasi',
+                    height: false,
+                  );
+                }),
+              ],
             ),
-            ElevatedButton(
-              child: const Text('Ya'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+          ),
         );
       },
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/domain/entities/student_home_entity.dart';
 
@@ -11,6 +10,7 @@ class LecturerLogBookTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: logBooks.length,
       itemBuilder: (context, index) {
         return Card(
