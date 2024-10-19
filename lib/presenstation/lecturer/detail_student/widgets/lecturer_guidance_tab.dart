@@ -76,7 +76,35 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
                   const SizedBox(height: 16),
                   _buildRevisionField(),
                   const SizedBox(height: 16),
-                  _buildActionButtons(),
+// zaki.beta
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.done),
+                        label: const Text(
+                          'Confitm',
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                        ),
+                        onPressed: () => _showConfirmationDialog(0),
+                      ),
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.cancel),
+                        label: const Text(
+                          'Cancel',
+                          style: TextStyle(color: AppColors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                        ),
+                        onPressed: () => _showConfirmationDialog(3),
+                      ),
+                    ],
+                  ),
+// zaki.beta
                 ],
               ),
             ),
@@ -157,13 +185,13 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
               },
             ),
             ElevatedButton(
-              child: const Text('Ya'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text('Ya'),
             ),
           ],
         );

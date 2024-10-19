@@ -6,7 +6,7 @@ import 'package:sistem_magang/data/source/lecturer_api_service.dart';
 import 'package:sistem_magang/domain/repository/lecturer.dart';
 import 'package:sistem_magang/service_locator.dart';
 
-class LecturerRepositoryImpl extends LecturerRepository{
+class LecturerRepositoryImpl extends LecturerRepository {
   @override
   Future<Either> getLecturerHome() async {
     Either result = await sl<LecturerApiService>().getLecturerHome();
@@ -19,7 +19,7 @@ class LecturerRepositoryImpl extends LecturerRepository{
 
         if (response.data['data'] == null ||
             response.data['data'] is! Map<String, dynamic>) {
-          return Left("Invalid data format");
+          return const Left("Invalid data format");
         }
 
         try {

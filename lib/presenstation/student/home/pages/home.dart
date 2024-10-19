@@ -18,7 +18,7 @@ import 'package:sistem_magang/presenstation/student/profile/pages/profile.dart';
 class HomePage extends StatefulWidget {
   final int currentIndex;
 
-  const HomePage({Key? key, this.currentIndex = 0}) : super(key: key);
+  const HomePage({super.key, this.currentIndex = 0});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -35,15 +35,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> _pages = [
-      GuidancePage(),
+    final List<Widget> pages = [
+      const GuidancePage(),
       const LogBookPage(),
       const ProfilePage(),
     ];
 
     return Scaffold(
-      body:
-          _currentIndex == 0 ? _buildHomeContent() : _pages[_currentIndex - 1],
+      body: _currentIndex == 0 ? _buildHomeContent() : pages[_currentIndex - 1],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
@@ -82,8 +81,7 @@ class _HomeContent extends StatelessWidget {
   final VoidCallback allGuidances;
   final VoidCallback allLogBooks;
 
-  const _HomeContent(
-      {super.key, required this.allGuidances, required this.allLogBooks});
+  const _HomeContent({required this.allGuidances, required this.allLogBooks});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -91,7 +89,7 @@ class _HomeContent extends StatelessWidget {
       child: BlocBuilder<StudentDisplayCubit, StudentDisplayState>(
         builder: (context, state) {
           if (state is StudentLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (state is StudentLoaded) {
             return CustomScrollView(
@@ -113,7 +111,7 @@ class _HomeContent extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: allGuidances,
-                          child: Icon(Icons.arrow_forward_ios, size: 14),
+                          child: const Icon(Icons.arrow_forward_ios, size: 14),
                         ),
                       ],
                     ),
@@ -136,7 +134,7 @@ class _HomeContent extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: allLogBooks,
-                          child: Icon(Icons.arrow_forward_ios, size: 14),
+                          child: const Icon(Icons.arrow_forward_ios, size: 14),
                         ),
                       ],
                     ),
@@ -196,7 +194,7 @@ class _HomeContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'HELLO,',
                   style: TextStyle(
                     fontSize: 12,
@@ -205,7 +203,7 @@ class _HomeContent extends StatelessWidget {
                 ),
                 Text(
                   student.name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -247,14 +245,14 @@ class _HomeContent extends StatelessWidget {
 class NotificationWidget extends StatelessWidget {
   final VoidCallback onClose;
 
-  const NotificationWidget({Key? key, required this.onClose}) : super(key: key);
+  const NotificationWidget({super.key, required this.onClose});
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
         padding: const EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           color: AppColors.warning,
           borderRadius: BorderRadius.circular(8),
@@ -266,8 +264,8 @@ class NotificationWidget extends StatelessWidget {
               color: AppColors.white,
             ),
             const SizedBox(width: 8),
-            Expanded(
-              child: const Text(
+            const Expanded(
+              child: Text(
                 'Anda belum dijadwalkan seminar',
                 style: TextStyle(
                   color: AppColors.white,

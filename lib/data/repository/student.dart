@@ -20,7 +20,7 @@ class StudentRepositoryImpl extends StudentRepository {
         // Check if 'data' is not null and is a Map
         if (response.data['data'] == null ||
             response.data['data'] is! Map<String, dynamic>) {
-          return Left("Invalid data format");
+          return const Left("Invalid data format");
         }
 
         try {
@@ -47,7 +47,7 @@ class StudentRepositoryImpl extends StudentRepository {
         // Check if 'data' is not null and is a Map
         if (response.data['data'] == null ||
             response.data['data'] is! Map<String, dynamic>) {
-          return Left("Invalid data format");
+          return const Left("Invalid data format");
         }
 
         try {
@@ -73,7 +73,7 @@ class StudentRepositoryImpl extends StudentRepository {
       },
     );
   }
-  
+
   @override
   Future<Either> editGuidances(EditGuidanceReqParams request) async {
     Either result = await sl<StudentApiService>().editGuidances(request);
@@ -86,7 +86,7 @@ class StudentRepositoryImpl extends StudentRepository {
       },
     );
   }
-  
+
   @override
   Future<Either> deleteGuidances(int id) async {
     Either result = await sl<StudentApiService>().deleteGuidances(id);

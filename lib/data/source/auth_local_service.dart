@@ -24,6 +24,6 @@ class AuthLocalServiceImpl extends AuthLocalService {
   Future<Either> logout() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.clear();
-    return Right('success');
+    return const Right('success');
   }
 }
