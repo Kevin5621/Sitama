@@ -27,9 +27,9 @@ class LecturerGuidanceCard extends StatefulWidget {
   final GuidanceEntity guidance; // Use GuidanceEntity directly
 
   const LecturerGuidanceCard({
-    Key? key,
+    super.key,
     required this.guidance,
-  }) : super(key: key);
+  });
 
   @override
   _LecturerGuidanceCardState createState() => _LecturerGuidanceCardState();
@@ -122,7 +122,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ElevatedButton.icon(
-          icon: const Icon(Icons.done),
+          icon: const Icon(Icons.check_circle_outline, color: AppColors.white),
           label:
               const Text('Confirm', style: TextStyle(color: AppColors.white)),
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
@@ -130,7 +130,7 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
               _showConfirmationDialog(LecturerGuidanceStatus.approved),
         ),
         ElevatedButton.icon(
-          icon: const Icon(Icons.cancel),
+          icon: const Icon(Icons.cancel_outlined, color: AppColors.white),
           label: const Text('Cancel', style: TextStyle(color: AppColors.white)),
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
           onPressed: () =>
@@ -157,13 +157,13 @@ class _LecturerGuidanceCardState extends State<LecturerGuidanceCard> {
               },
             ),
             ElevatedButton(
-              child: const Text('Ya'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text('Ya'),
             ),
           ],
         );
