@@ -44,19 +44,19 @@ class StudentCard extends StatelessWidget {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-//vinsen.beta
-                  color: isSelected
-                      ? AppColors.info.withOpacity(0.1)
-                      : AppColors.white,
-                  borderRadius: BorderRadius.circular(8),
+                color: isSelected 
+                      ? AppColors.info.withOpacity(0.1) 
+                      : AppColors.white, 
+                  shape: BoxShape.circle, 
                   border: Border.all(
-                    color: isSelected ? Colors.blue : Colors.grey.shade300,
-                    width: isSelected ? 2 : 1,
+                    color: isSelected ? AppColors.info : AppColors.gray, 
+                    width: isSelected ? 2 : 1, 
                   ),
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl),
-                    fit: BoxFit.cover,
-//vinsen.beta
+                ),
+                child: ClipOval(
+                  child: Image.network(
+                    imageUrl, 
+                    fit: BoxFit.cover, 
                   ),
                 ),
               ),
