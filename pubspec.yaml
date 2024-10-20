@@ -28,6 +28,8 @@ dependencies:
     crypto:
     mime:
     path:
+    hive:
+    hive_flutter:
 
 dev_dependencies:
     flutter_test:
