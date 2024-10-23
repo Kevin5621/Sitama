@@ -7,7 +7,6 @@ import 'package:sistem_magang/common/widgets/setting_button.dart';
 import 'package:sistem_magang/data/models/industry_box_student.dart';
 import 'package:sistem_magang/data/source/industry_api_service.dart';
 import 'package:sistem_magang/presenstation/student/profile/widgets/box_industry.dart';
-
 import 'package:sistem_magang/service_locator.dart';
 
 class ProfilePage extends StatelessWidget {
