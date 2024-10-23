@@ -1,34 +1,69 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sistem_magang/common/widgets/profile_header.dart';
-import 'package:sistem_magang/common/widgets/setting_button.dart';
-import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/common/widgets/log_out_alert.dart';
+import 'package:sistem_magang/common/widgets/profile_header.dart';
 import 'package:sistem_magang/common/widgets/reset_password.dart';
+import 'package:sistem_magang/common/widgets/setting_button.dart';
+import 'package:sistem_magang/presenstation/student/profile/widgets/api_service.dart';
+import 'package:sistem_magang/presenstation/student/profile/widgets/box_industry.dart';
+import 'package:sistem_magang/presenstation/student/profile/widgets/model.dart';
+import 'package:sistem_magang/service_locator.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  ProfilePage({super.key}) {
+    // Memastikan service sudah diregister
+    if (!sl.isRegistered<IndustryApiService>()) {
+      sl.registerLazySingleton<IndustryApiService>(() => IndustryApiServiceImpl());
+    }
+  }
+
+  final IndustryApiService _apiService = sl<IndustryApiService>();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ProfileHeader(), // 
-            SizedBox(height: 22),
-            _industry(),
-            SizedBox(height: 120),
-            _settingsList(context),
-          ],
-        ),
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: SingleChildScrollView(
+      child: Column(
+        children: [
+          const ProfileHeader(),
+          const SizedBox(height: 22),
+          FutureBuilder<Either<String, InternshipModel>>(
+            future: _apiService.getStudentProfile(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const IndustryCard(internship: null);
+              }
+
+              if (snapshot.hasData) {
+                return snapshot.data!.fold(
+                  (error) {
+                    // Gunakan addPostFrameCallback untuk menampilkan SnackBar
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error)),
+                      );
+                    });
+                    return const IndustryCard(internship: null);
+                  },
+                  (internship) => IndustryCard(internship: internship),
+                );
+              }
+
+              return const IndustryCard(internship: null);
+            },
+          ),
+          const SizedBox(height: 120),
+          _settingsList(context),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Padding _settingsList(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           SettingButton(
@@ -49,76 +84,10 @@ class ProfilePage extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return LogOutAlert();
+                  return const LogOutAlert();
                 },
               );
             },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Container _industry() {
-    return Container(
-      padding: EdgeInsets.all(20),
-      width: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.gray500,
-            offset: Offset(0, 2),
-            blurRadius: 2,
-          )
-        ],
-        color: AppColors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Text(
-              'Industri',
-              style: TextStyle(
-                color: AppColors.gray,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            'Industri 1',
-            style: TextStyle(
-              color: AppColors.gray,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            'Nama : Pertamina',
-            style: TextStyle(
-              color: AppColors.gray,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            'Tanggal Mulai : 11 Agustus 2024',
-            style: TextStyle(
-              color: AppColors.gray,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            'Tanggal Selesai : 12 Agustus 2024',
-            style: TextStyle(
-              color: AppColors.gray,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
           ),
         ],
       ),
