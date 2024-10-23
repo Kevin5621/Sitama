@@ -15,7 +15,8 @@ class IndustryApiServiceImpl implements IndustryApiService {
   @override
   Future<Either<String, InternshipModel>> getStudentProfile() async {
     try {
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
       var token = sharedPreferences.get('token');
 
       var response = await sl<DioClient>().get(
@@ -34,13 +35,14 @@ class IndustryApiServiceImpl implements IndustryApiService {
         }
         return const Left('Data not found');
       }
-      
-      return Left(response.data['errors']['message'] ?? 'Unknown error occurred');
+
+      return Left(
+          response.data['errors']['message'] ?? 'Unknown error occurred');
     } on DioException catch (e) {
-      return Left(e.response?.data['errors']['message'] ?? 'Error fetching profile');
+      return Left(
+          e.response?.data['errors']['message'] ?? 'Error fetching profile');
     } catch (e) {
       return Left('Unexpected error occurred');
     }
   }
 }
-

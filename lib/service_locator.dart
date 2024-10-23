@@ -51,7 +51,8 @@ void setupServiceLocator() {
 
   sl.registerSingleton<GetHomeLecturerUseCase>(GetHomeLecturerUseCase());
   sl.registerSingleton<GetDetailStudentUseCase>(GetDetailStudentUseCase());
-  sl.registerSingleton<UpdateStatusGuidanceUseCase>(UpdateStatusGuidanceUseCase());
+  sl.registerSingleton<UpdateStatusGuidanceUseCase>(
+      UpdateStatusGuidanceUseCase());
 
   // Services
   sl.registerLazySingleton<IndustryApiService>(() => IndustryApiServiceImpl());

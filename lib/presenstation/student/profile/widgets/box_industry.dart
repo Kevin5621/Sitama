@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sistem_magang/core/config/themes/app_color.dart';
 import 'package:sistem_magang/data/models/industry_box_student.dart';
+
 // industry_card.dart
 class IndustryCard extends StatelessWidget {
   final InternshipModel? internship;
