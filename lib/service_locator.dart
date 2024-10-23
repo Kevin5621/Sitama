@@ -1,5 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sistem_magang/core/constansts/api_urls.dart';
 import 'package:sistem_magang/core/network/dio_client.dart';
+import 'package:sistem_magang/core/service/secure_api.dart';
 import 'package:sistem_magang/data/repository/auth.dart';
 import 'package:sistem_magang/data/repository/lecturer.dart';
 import 'package:sistem_magang/data/repository/student.dart';
@@ -25,36 +28,47 @@ import 'package:sistem_magang/domain/usecases/update_status_guidance.dart';
 
 final sl = GetIt.instance;
 
-void setupServiceLocator() {
+Future<void> setupServiceLocator() async {
+  // Core & Services
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerSingleton<SharedPreferences>(sharedPreferences);
+  
+  final token = sharedPreferences.getString('token') ?? '';
+  sl.registerSingleton<SecureApiClient>(
+    SecureApiClient(
+      baseUrl: ApiUrls.baseUrl,
+      secretKey: token,
+    ),
+  );
+  
   sl.registerSingleton<DioClient>(DioClient());
 
-  //Service
+  // API Services
   sl.registerSingleton<AuthApiService>(AuthApiServiceImpl());
   sl.registerSingleton<AuthLocalService>(AuthLocalServiceImpl());
   sl.registerSingleton<StudentApiService>(StudentApiServiceImpl());
   sl.registerSingleton<LecturerApiService>(LecturerApiServiceImpl());
+  sl.registerLazySingleton<IndustryApiService>(() => IndustryApiServiceImpl());
 
-  // Repostory
+  // Repositories
   sl.registerSingleton<AuthRepostory>(AuthRepostoryImpl());
   sl.registerSingleton<StudentRepository>(StudentRepositoryImpl());
   sl.registerSingleton<LecturerRepository>(LecturerRepositoryImpl());
 
-  // Usecase
+  // Use Cases
   sl.registerSingleton<SigninUseCase>(SigninUseCase());
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
+  sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
+  
+  // Student Use Cases
   sl.registerSingleton<GetHomeStudentUseCase>(GetHomeStudentUseCase());
-  sl.registerSingleton<GetGuidancesStudentUseCase>(
-      GetGuidancesStudentUseCase());
+  sl.registerSingleton<GetGuidancesStudentUseCase>(GetGuidancesStudentUseCase());
   sl.registerSingleton<AddGuidanceUseCase>(AddGuidanceUseCase());
   sl.registerSingleton<EditGuidanceUseCase>(EditGuidanceUseCase());
   sl.registerSingleton<DeleteGuidanceUseCase>(DeleteGuidanceUseCase());
 
+  // Lecturer Use Cases
   sl.registerSingleton<GetHomeLecturerUseCase>(GetHomeLecturerUseCase());
   sl.registerSingleton<GetDetailStudentUseCase>(GetDetailStudentUseCase());
   sl.registerSingleton<UpdateStatusGuidanceUseCase>(UpdateStatusGuidanceUseCase());
-
-  // Services
-  sl.registerLazySingleton<IndustryApiService>(() => IndustryApiServiceImpl());
-
-  sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
 }

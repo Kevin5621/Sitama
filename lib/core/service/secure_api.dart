@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:path/path.dart' as path;
 import 'package:dio/dio.dart';
 import 'package:sistem_magang/core/service/security_utils.dart';
 
@@ -7,6 +7,8 @@ class SecureApiClient {
   final Dio _dio;
   final String _baseUrl;
   final String _secretKey;
+
+  String get secretKey => _secretKey;
   
   SecureApiClient({
     required String baseUrl,
@@ -19,30 +21,39 @@ class SecureApiClient {
         onRequest: (options, handler) {
           // Add timestamp to prevent replay attacks
           options.headers['X-Timestamp'] = DateTime.now().millisecondsSinceEpoch.toString();
-          
-          // Add request signature
           final signature = SecurityUtils.generateRequestSignature(
             options.data ?? {},
             _secretKey,
           );
           options.headers['X-Signature'] = signature;
-          
           return handler.next(options);
         },
         onError: (error, handler) {
-          // Handle specific security-related errors
           if (error.response?.statusCode == 401) {
             // Handle unauthorized access
-            // Misalnya refresh token atau logout
           }
           return handler.next(error);
         },
       ),
     );
   }
-  
-  get path => null;
-  
+
+  // Implement get method
+  Future<Response> get(String endpoint) async {
+    try {
+      final headers = {
+        'Authorization': 'Bearer ${await _getSecureToken()}',
+      };
+
+      return await _dio.get(
+        '$_baseUrl$endpoint',
+        options: Options(headers: headers),
+      );
+    } catch (e) {
+      if (e is SecurityException) rethrow;
+      throw SecurityException('GET request failed: ${e.toString()}');
+    }
+  }
 
   Future<Response> uploadImage(File imageFile) async {
     try {
@@ -54,7 +65,6 @@ class SecureApiClient {
         path.basename(imageFile.path)
       );
       
-      // Create form data with sanitized input
       final formData = FormData.fromMap({
         'profile_image': await MultipartFile.fromFile(
           imageFile.path,
@@ -62,7 +72,6 @@ class SecureApiClient {
         ),
       });
 
-      // Add additional security headers
       final headers = {
         'Authorization': 'Bearer ${await _getSecureToken()}',
         'Content-Type': 'multipart/form-data',
@@ -81,9 +90,6 @@ class SecureApiClient {
 
   Future<String> _getSecureToken() async {
     // Implement secure token retrieval
-    // Misalnya dari secure storage
     return '';
   }
-
-  get(String s) {}
 }

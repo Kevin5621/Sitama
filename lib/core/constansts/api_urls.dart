@@ -3,6 +3,7 @@ class ApiUrls {
   static const login = '${baseUrl}login';
   static const studentHome = '${baseUrl}student/home';
   static const studentGuidance = '${baseUrl}student/guidance';
+  static const studentProfile = '${baseUrl}student/profile';
 
 
   static const lecturerHome = '${baseUrl}lecturer/home';
