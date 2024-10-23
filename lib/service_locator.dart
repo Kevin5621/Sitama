@@ -21,6 +21,7 @@ import 'package:sistem_magang/domain/usecases/is_logged_in.dart';
 import 'package:sistem_magang/domain/usecases/log_out.dart';
 import 'package:sistem_magang/domain/usecases/signin.dart';
 import 'package:sistem_magang/domain/usecases/update_status_guidance.dart';
+import 'package:sistem_magang/presenstation/student/profile/widgets/api_service.dart';
 
 final sl = GetIt.instance;
 
@@ -50,8 +51,10 @@ void setupServiceLocator() {
 
   sl.registerSingleton<GetHomeLecturerUseCase>(GetHomeLecturerUseCase());
   sl.registerSingleton<GetDetailStudentUseCase>(GetDetailStudentUseCase());
-  sl.registerSingleton<UpdateStatusGuidanceUseCase>(
-      UpdateStatusGuidanceUseCase());
+  sl.registerSingleton<UpdateStatusGuidanceUseCase>(UpdateStatusGuidanceUseCase());
+
+  // Services
+  sl.registerLazySingleton<IndustryApiService>(() => IndustryApiServiceImpl());
 
   sl.registerSingleton<LogoutUseCase>(LogoutUseCase());
 }
