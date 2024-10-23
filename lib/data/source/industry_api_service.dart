@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sistem_magang/core/constansts/api_urls.dart';
 import 'package:sistem_magang/core/network/dio_client.dart';
-import 'package:sistem_magang/presenstation/student/profile/widgets/model.dart';
+import 'package:sistem_magang/data/models/industry_box_student.dart';
 import 'package:sistem_magang/service_locator.dart';
 
 abstract class IndustryApiService {
