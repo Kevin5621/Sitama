@@ -1,13 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sistem_magang/common/widgets/log_out_alert.dart';
 import 'package:sistem_magang/common/widgets/profile_header.dart';
 import 'package:sistem_magang/common/widgets/reset_password.dart';
 import 'package:sistem_magang/common/widgets/setting_button.dart';
-import 'package:sistem_magang/presenstation/student/profile/widgets/api_service.dart';
+import 'package:sistem_magang/data/source/industry_api_service.dart';
 import 'package:sistem_magang/presenstation/student/profile/widgets/box_industry.dart';
-import 'package:sistem_magang/presenstation/student/profile/widgets/model.dart';
+import 'package:sistem_magang/data/models/industry_box_student.dart';
 import 'package:sistem_magang/service_locator.dart';
 
 class ProfilePage extends StatelessWidget {
